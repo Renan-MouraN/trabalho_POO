@@ -1,6 +1,8 @@
 package LimaOscarLima.CapitaoMagico;
 
-import LimaOscarLima.Interfaces_campeoes;
+import LimaOscarLima.Interfaces.Interfaces_campeoes;
+
+import java.util.Arrays;
 
 public class Enemies implements Interfaces_campeoes {
     private int [] enemies_states;						// estados
@@ -30,6 +32,11 @@ public class Enemies implements Interfaces_campeoes {
         this.nextEnemies = nextEnemies;
 
     }
+
+    public void inicializaClasse(){
+        Arrays.fill(this.enemies_states, 0);
+    }
+
 
     public int [] getStates(){
         return enemies_states;

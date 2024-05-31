@@ -1,6 +1,9 @@
 package LimaOscarLima.UrfRider;
 
-public class Background {
+import LimaOscarLima.GameLib;
+import LimaOscarLima.Interfaces.Interface;
+
+public class Background implements Interface {
     private double [] background_X;
     private double [] background_Y;
     private double background_speed;
@@ -12,7 +15,15 @@ public class Background {
         this.background_speed = s;
         this.background_count = c;
     }
-    
+
+    public void inicializaClasse() {
+        for(int i = 0; i < this.background_X.length; i++){
+
+            this.background_X[i] = Math.random() * GameLib.WIDTH;
+            this.background_Y[i] =Math.random() * GameLib.HEIGHT;
+        }
+    }
+
     public double [] getBackground_X(){
         return background_X;
     }

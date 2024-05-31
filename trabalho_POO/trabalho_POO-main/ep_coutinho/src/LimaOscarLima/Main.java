@@ -105,22 +105,12 @@ public class Main {
 
         /* inicializações */
 
-        for(int i = 0; i < projectile.getStates().length; i++) projectile.setStates_value(i, INACTIVE);
-        for(int i = 0; i < e_projectile.getStates().length; i++) e_projectile.setStates_value(i, INACTIVE);
-        for(int i = 0; i < enemy1.getStates().length; i++) enemy1.setStates_value(i, INACTIVE);
-        for(int i = 0; i < enemy2.getStates().length; i++) enemy2.setStates_value(i, INACTIVE);
-
-        for(int i = 0; i < background1.getBackground_X().length; i++){
-
-            background1.setX_value(i,Math.random() * GameLib.WIDTH);
-            background1.setY_value(i,Math.random() * GameLib.HEIGHT);
-        }
-
-        for(int i = 0; i < background1.getBackground_X().length; i++){
-
-            background2.setX_value(i,Math.random() * GameLib.WIDTH);
-            background2.setY_value(i,Math.random() * GameLib.HEIGHT);
-        }
+        projectile.inicializaClasse();
+        e_projectile.inicializaClasse();
+        enemy1.inicializaClasse();
+        enemy2.inicializaClasse();
+        background1.inicializaClasse();
+        background2.inicializaClasse();
 
         /* iniciado interface gráfica */
 
@@ -313,7 +303,7 @@ public class Main {
                     else {
 
                         enemy1.setX(i, enemy1.getX(i) + (enemy1.getV(i) * Math.cos(enemy1.getAngle(i)) * delta));
-                        enemy1.setX(i, enemy1.getX(i) + (enemy1.getV(i) * Math.cos(enemy1.getAngle(i)) * delta *(-1.0)));
+                        enemy1.setY(i, enemy1.getY(i) + (enemy1.getV(i) * Math.sin(enemy1.getAngle(i)) * delta *(-1.0)));
                         enemy1.setAngle(i, enemy1.getAngle(i) + (enemy1.getRV(i) * delta));
 
                         if(currentTime > enemy1.getNextShot(i) && enemy1.getY(i) < player.getCharacter_Y()){
