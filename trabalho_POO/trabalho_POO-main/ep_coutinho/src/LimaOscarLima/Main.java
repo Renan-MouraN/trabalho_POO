@@ -6,6 +6,7 @@ import LimaOscarLima.BaraoVermelho.Projectile;
 import LimaOscarLima.CapitaoMagico.*;
 import LimaOscarLima.BaraoVermelho.Character;
 import LimaOscarLima.UrfRider.Background;
+import LimaOscarLima.GarenR.*;
 
 public class Main {
 
@@ -81,36 +82,27 @@ public class Main {
 
         /* variáveis dos projéteis disparados pelo player */
 
-        Projectile projectile = new Projectile(10);
+        Projectile projectile = Nautilus.inicializaProjetile(10);
 
         /* variáveis dos inimigos tipo 1 */
 
-        Enemies enemy1 = new Enemies(10, 9.0, currentTime + 2000);
+        Enemies enemy1 = Nautilus.inicializaEnemy(10, 9.0, currentTime + 2000);
 
         /* variáveis dos inimigos tipo 2 */
 
-        EnemyJR enemy2 = new EnemyJR(10, 12.0, currentTime + 7000,GameLib.WIDTH * 0.20, 0);
+        EnemyJR enemy2 = Nautilus.inicializaEnemyJR(10, 12.0, currentTime + 7000,GameLib.WIDTH * 0.20, 0);
 
         /* variáveis dos projéteis lançados pelos inimigos (tanto tipo 1, quanto tipo 2) */
 
-        MissileBarrage e_projectile = new MissileBarrage(200, 2.0);
+        MissileBarrage e_projectile = Nautilus.inicializaMissileBarrage(200, 2.0);
 
         /* estrelas que formam o fundo de primeiro plano */
 
-        Background background1 = new Background(20,0.070,0.0);
+        Background background1 = Nautilus.inicializaBackground(20,0.070,0.0);
 
         /* estrelas que formam o fundo de segundo plano */
 
-        Background background2 = new Background(50,0.045,0.0);
-
-        /* inicializações */
-
-        projectile.inicializaClasse();
-        e_projectile.inicializaClasse();
-        enemy1.inicializaClasse();
-        enemy2.inicializaClasse();
-        background1.inicializaClasse();
-        background2.inicializaClasse();
+        Background background2 = Nautilus.inicializaBackground(50,0.045,0.0);
 
         /* iniciado interface gráfica */
 
