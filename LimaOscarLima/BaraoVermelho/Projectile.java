@@ -1,10 +1,11 @@
 package LimaOscarLima.BaraoVermelho;
 
 import LimaOscarLima.Interfaces.Interfaces_Bonecos;
+import LimaOscarLima.Interfaces.Locate;
 
 import java.util.Arrays;
 
-public class Projectile implements Interfaces_Bonecos {
+public class Projectile implements Interfaces_Bonecos{
     private int [] projectile_states;
     private double [] projectile_X;
     private double [] projectile_Y;
@@ -19,11 +20,10 @@ public class Projectile implements Interfaces_Bonecos {
         this.projectile_VX = new double[d];
         this.projectile_VY = new double[d];
 
+        Arrays.fill(this.projectile_states, 0);
+
     }
 
-    public void inicializaClasse(){
-        Arrays.fill(this.projectile_states, 0);
-    }
 
     public int [] getStates(){
         return projectile_states;

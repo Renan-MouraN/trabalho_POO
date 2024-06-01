@@ -4,6 +4,8 @@ import LimaOscarLima.GameLib;
 import LimaOscarLima.Interfaces.Interface;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Background implements Interface {
     private double [] background_X;
@@ -19,14 +21,10 @@ public class Background implements Interface {
         this.background_Y = new double[d];
         this.background_speed = s;
         this.background_count = c;
-    }
 
-    public void inicializaClasse() {
-        for(int i = 0; i < this.background_X.length; i++){
+        Arrays.fill(this.background_X, Math.random() * GameLib.WIDTH);
+        Arrays.fill(this.background_Y, Math.random() * GameLib.HEIGHT);
 
-            this.background_X[i] = Math.random() * GameLib.WIDTH;
-            this.background_Y[i] =Math.random() * GameLib.HEIGHT;
-        }
     }
 
     public double [] getBackground_X(){

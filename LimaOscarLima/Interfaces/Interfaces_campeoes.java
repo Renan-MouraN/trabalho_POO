@@ -1,7 +1,7 @@
 package LimaOscarLima.Interfaces;
 
 public interface Interfaces_campeoes extends Interfaces_Bonecos {
-    double getRadius ();
+    //double getRadius ();
     double getV(int i);
     double getAngle(int i);
     double getRV(int i);

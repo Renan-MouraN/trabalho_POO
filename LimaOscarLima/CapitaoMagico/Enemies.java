@@ -1,19 +1,20 @@
 package LimaOscarLima.CapitaoMagico;
 
 import LimaOscarLima.Interfaces.Interfaces_campeoes;
+import LimaOscarLima.Interfaces.Locate;
 
 import java.util.Arrays;
 
-public class Enemies implements Interfaces_campeoes {
-    private int [] enemies_states;						// estados
-    private double [] enemies_X;					// coordenadas x
-    private double [] enemies_Y;					// coordenadas y
-    private double [] enemies_V;					// velocidades
-    private double [] enemies_angle;				// ângulos (indicam direção do movimento)
-    private double [] enemies_RV;					// velocidades de rotação
-    private double [] enemies_explosion_start;		// instantes dos inícios das explosões
-    private double [] enemies_explosion_end;		// instantes dos finais da explosões
-    private long [] enemies_nextShoot;				// instantes do próximo tiro
+public class Enemies implements Interfaces_campeoes, Locate{
+    private int [] enemies_states;						    // estados
+    private double [] enemies_X;					        // coordenadas x
+    private double [] enemies_Y;					        // coordenadas y
+    private double [] enemies_V;					        // velocidades
+    private double [] enemies_angle;				        // ângulos (indicam direção do movimento)
+    private double [] enemies_RV;					        // velocidades de rotação
+    private double [] enemies_explosion_start;		        // instantes dos inícios das explosões
+    private double [] enemies_explosion_end;		        // instantes dos finais da explosões
+    private long [] enemies_nextShoot;				        // instantes do próximo tiro
     private double enemies_radius;							// raio (tamanho do inimigo 1)
     private long nextEnemies;
     
@@ -31,12 +32,9 @@ public class Enemies implements Interfaces_campeoes {
         this.enemies_radius = enemies_radius;
         this.nextEnemies = nextEnemies;
 
-    }
-
-    public void inicializaClasse(){
         Arrays.fill(this.enemies_states, 0);
-    }
 
+    }
 
     public int [] getStates(){
         return enemies_states;
@@ -126,8 +124,5 @@ public class Enemies implements Interfaces_campeoes {
         nextEnemies = l;
     }
 
-    void desenhaEnemies(){
-
-    }
 }
 
