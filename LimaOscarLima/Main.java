@@ -201,7 +201,7 @@ public class Main {
                         enemy1.setY(i, enemy1.getY(i) + (enemy1.getV(i) * Math.sin(enemy1.getAngle(i)) * Zillean.getDelta() *(-1.0)));
                         enemy1.setAngle(i, enemy1.getAngle(i) + (enemy1.getRV(i) * Zillean.getDelta()));
 
-                        if(Zillean.getCurrentTime() > enemy1.getNextShot(i) && enemy1.getY(i) < player.getCharacter_Y()){
+                        if(Zillean.getCurrentTime() > enemy1.getNextShot(i) && enemy1.getY(i) < player.getplayer_Y()){
 
                             int free = findFreeIndex(enemyShot.getStates());
 
@@ -348,11 +348,11 @@ public class Main {
 
             /* Verificando se a explosão do player já acabou.         */
             /* Ao final da explosão, o player volta a ser controlável */
-            if(player.getCharacter_state() == EXPLODING){
+            if(player.getplayer_state() == EXPLODING){
 
-                if(Zillean.getCurrentTime() > player.getCharacter_explosion_end()){
+                if(Zillean.getCurrentTime() > player.getplayer_explosion_end()){
 
-                    player.setCharacter_state(ACTIVE);
+                    player.setplayer_state(ACTIVE);
                 }
             }
 
@@ -360,26 +360,26 @@ public class Main {
             /* Verificando entrada do usuário (teclado) */
             /********************************************/
 
-            if(player.getCharacter_state() == ACTIVE){
+            if(player.getplayer_state() == ACTIVE){
 
-                if(GameLib.iskeyPressed(GameLib.KEY_UP)) player.setCharacter_Y(player.getCharacter_Y() - Zillean.getDelta() * player.getCharacter_VY());
-                if(GameLib.iskeyPressed(GameLib.KEY_DOWN)) player.setCharacter_Y(player.getCharacter_Y() + Zillean.getDelta() * player.getCharacter_VY());
-                if(GameLib.iskeyPressed(GameLib.KEY_LEFT)) player.setCharacter_X(player.getCharacter_X() - Zillean.getDelta() * player.getCharacter_VX());
-                if(GameLib.iskeyPressed(GameLib.KEY_RIGHT)) player.setCharacter_X(player.getCharacter_X() + Zillean.getDelta() * player.getCharacter_VX());
+                if(GameLib.iskeyPressed(GameLib.KEY_UP)) player.setplayer_Y(player.getplayer_Y() - Zillean.getDelta() * player.getplayer_VY());
+                if(GameLib.iskeyPressed(GameLib.KEY_DOWN)) player.setplayer_Y(player.getplayer_Y() + Zillean.getDelta() * player.getplayer_VY());
+                if(GameLib.iskeyPressed(GameLib.KEY_LEFT)) player.setplayer_X(player.getplayer_X() - Zillean.getDelta() * player.getplayer_VX());
+                if(GameLib.iskeyPressed(GameLib.KEY_RIGHT)) player.setplayer_X(player.getplayer_X() + Zillean.getDelta() * player.getplayer_VX());
                 if(GameLib.iskeyPressed(GameLib.KEY_CONTROL)) {
 
-                    if(Zillean.getCurrentTime() > player.getCharacter_nextShot()){
+                    if(Zillean.getCurrentTime() > player.getplayer_nextShot()){
 
                         int free = findFreeIndex(playerShot.getStates());
 
                         if(free < playerShot.getStates().length){
 
-                            playerShot.setX(free, player.getCharacter_X());
-                            playerShot.setY(free, player.getCharacter_Y() - 2 * player.getCharacter_radius());
+                            playerShot.setX(free, player.getplayer_X());
+                            playerShot.setY(free, player.getplayer_Y() - 2 * player.getplayer_radius());
                             playerShot.setplayerShotVX(free, 0.0);
                             playerShot.setplayerShotVY(free, -1.0);
                             playerShot.setStates_value(free, 1);
-                            player.setCharacter_nextShot(Zillean.getCurrentTime() + 100);
+                            player.setplayer_nextShot(Zillean.getCurrentTime() + 100);
                         }
                     }
                 }
@@ -390,10 +390,10 @@ public class Main {
             /* Verificando se coordenadas do player ainda estão dentro	*/
             /* da tela de jogo após processar entrada do usuário.       */
 
-            if(player.getCharacter_X() < 0.0) player.setCharacter_X(0.0);
-            if(player.getCharacter_X() >= GameLib.WIDTH) player.setCharacter_X(GameLib.WIDTH - 1);
-            if(player.getCharacter_Y() < 25.0) player.setCharacter_Y(25.0);
-            if(player.getCharacter_Y() >= GameLib.HEIGHT) player.setCharacter_Y(GameLib.HEIGHT - 1);
+            if(player.getplayer_X() < 0.0) player.setplayer_X(0.0);
+            if(player.getplayer_X() >= GameLib.WIDTH) player.setplayer_X(GameLib.WIDTH - 1);
+            if(player.getplayer_Y() < 25.0) player.setplayer_Y(25.0);
+            if(player.getplayer_Y() >= GameLib.HEIGHT) player.setplayer_Y(GameLib.HEIGHT - 1);
 
             /*******************/
             /* Desenho da cena */
@@ -403,15 +403,15 @@ public class Main {
 
             /* desenhando player */
 
-            if(player.getCharacter_state() == EXPLODING){
+            if(player.getplayer_state() == EXPLODING){
 
-                double alpha = (Zillean.getCurrentTime() - player.getCharacter_explosion_start()) / (player.getCharacter_explosion_end() - player.getCharacter_explosion_start());
-                GameLib.drawExplosion(player.getCharacter_X(), player.getCharacter_Y(), alpha);
+                double alpha = (Zillean.getCurrentTime() - player.getplayer_explosion_start()) / (player.getplayer_explosion_end() - player.getplayer_explosion_start());
+                GameLib.drawExplosion(player.getplayer_X(), player.getplayer_Y(), alpha);
             }
             else{
 
                 GameLib.setColor(Color.BLUE);
-                GameLib.drawPlayer(player.getCharacter_X(), player.getCharacter_Y(), player.getCharacter_radius());
+                GameLib.drawPlayer(player.getplayer_X(), player.getplayer_Y(), player.getplayer_radius());
             }
 
 

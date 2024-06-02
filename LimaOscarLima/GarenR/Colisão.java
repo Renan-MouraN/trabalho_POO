@@ -13,18 +13,18 @@ public class Colisão {
 
     static void PlayerProjetil(Player player, MissileBarrage e_projectile){
 
-        if(player.getCharacter_state() == ACTIVE){
+        if(player.getplayer_state() == ACTIVE){
             for(int i = 0; i < e_projectile.getStates().length; i++){
 
-                double dx = e_projectile.getX(i) - player.getCharacter_X();
-                double dy = e_projectile.getY(i) - player.getCharacter_Y();
+                double dx = e_projectile.getX(i) - player.getplayer_X();
+                double dy = e_projectile.getY(i) - player.getplayer_Y();
                 double dist = Math.sqrt(dx * dx + dy * dy);
 
-                if(dist < (player.getCharacter_radius() + e_projectile.getRadius()) * 0.8){
+                if(dist < (player.getplayer_radius() + e_projectile.getRadius()) * 0.8){
 
-                    player.setCharacter_state(EXPLODING);
-                    player.setCharacter_explosion_start(Zillean.getCurrentTime());
-                    player.setCharacter_explosion_end(Zillean.getCurrentTime() + 2000);
+                    player.setplayer_state(EXPLODING);
+                    player.setplayer_explosion_start(Zillean.getCurrentTime());
+                    player.setplayer_explosion_end(Zillean.getCurrentTime() + 2000);
                 }
             }
         }
@@ -32,32 +32,32 @@ public class Colisão {
 
     static void PlayerInimigo(Player player, Enemies enemy1, EnemyJR enemy2){
 
-        if(player.getCharacter_state() == ACTIVE){
+        if(player.getplayer_state() == ACTIVE){
             for(int i = 0; i < enemy1.getStates().length; i++){
 
-                double dx = enemy1.getX(i) - player.getCharacter_X();
-                double dy = enemy1.getY(i) - player.getCharacter_Y();
+                double dx = enemy1.getX(i) - player.getplayer_X();
+                double dy = enemy1.getY(i) - player.getplayer_Y();
                 double dist = Math.sqrt(dx * dx + dy * dy);
 
-                if(dist < (player.getCharacter_radius() + enemy1.getRadius()) * 0.8){
+                if(dist < (player.getplayer_radius() + enemy1.getRadius()) * 0.8){
 
-                    player.setCharacter_state(EXPLODING);
-                    player.setCharacter_explosion_start(Zillean.getCurrentTime());
-                    player.setCharacter_explosion_end(Zillean.getCurrentTime() + 2000);
+                    player.setplayer_state(EXPLODING);
+                    player.setplayer_explosion_start(Zillean.getCurrentTime());
+                    player.setplayer_explosion_end(Zillean.getCurrentTime() + 2000);
                 }
             }
 
             for(int i = 0; i < enemy2.getStates().length; i++){
 
-                double dx = enemy2.getX(i) - player.getCharacter_X();
-                double dy = enemy2.getY(i) - player.getCharacter_Y();
+                double dx = enemy2.getX(i) - player.getplayer_X();
+                double dy = enemy2.getY(i) - player.getplayer_Y();
                 double dist = Math.sqrt(dx * dx + dy * dy);
 
-                if(dist < (player.getCharacter_radius() + enemy2.getRadius()) * 0.8){
+                if(dist < (player.getplayer_radius() + enemy2.getRadius()) * 0.8){
 
-                    player.setCharacter_state(EXPLODING);
-                    player.setCharacter_explosion_start(Zillean.getCurrentTime());
-                    player.setCharacter_explosion_end(Zillean.getCurrentTime() + 2000);
+                    player.setplayer_state(EXPLODING);
+                    player.setplayer_explosion_start(Zillean.getCurrentTime());
+                    player.setplayer_explosion_end(Zillean.getCurrentTime() + 2000);
                 }
             }
         }
