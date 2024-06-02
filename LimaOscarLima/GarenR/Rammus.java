@@ -6,10 +6,29 @@ import LimaOscarLima.CapitaoMagico.*;
 import LimaOscarLima.GameLib.GameLib;
 
 import static LimaOscarLima.Main.*;
+import static LimaOscarLima.Util.Utilidades.*;
 
 public final class Rammus{
 
-    static void PlayerProjetil(Player player, MissileBarrage enemyShot){
+    public static void mainLoop(Player player, Enemies enemy1, EnemyJR enemy2, PlayerShot playerShot, EnemyShot enemyShot){
+
+        Colisoes.PlayerProjetil(player, enemyShot);
+        Colisoes.PlayerInimigo(player, enemy1, enemy2);
+        Colisoes.InimigoProjetil(enemy1, enemy2, playerShot);
+        Estados.verificaPlayer(player);
+        Estados.verificaPlayerShot(playerShot);
+        Estados.verificaEnemy1(enemy1,enemyShot,player);
+        Estados.verificaEnemy2(enemy2,enemyShot);
+        Estados.verificaEnemyShot(enemyShot);
+        Input.verificaInput(player, playerShot);
+
+    }
+
+}
+
+final class Colisoes{
+
+    static void PlayerProjetil(Player player, EnemyShot enemyShot){
 
         if(player.getplayer_state() == ACTIVE){
             for(int i = 0; i < enemyShot.getStates().length; i++){
@@ -100,26 +119,7 @@ public final class Rammus{
             }
         }
     }
-
-    public static void verificaColisão(Player player, Enemies enemy1, EnemyJR enemy2, PlayerShot playerShot, MissileBarrage enemyShot){
-
-        PlayerProjetil(player, enemyShot);
-        PlayerInimigo(player, enemy1, enemy2);
-        InimigoProjetil(enemy1, enemy2, playerShot);
-
-    }
-
-    public static void verificaEstados(Player player, Enemies enemy1, EnemyJR enemy2, PlayerShot playerShot, MissileBarrage enemyShot){
-        Estados.verificaPlayer(player);
-        Estados.verificaPlayerShot(playerShot);
-        Estados.verificaEnemy1(enemy1,enemyShot,player);
-        Estados.verificaEnemy2(enemy2,enemyShot,player);
-        Estados.verificaEnemyShot(enemyShot);
-
-    }
-
 }
-
 final class Estados{
 
     static void verificaPlayer(Player player){
@@ -153,7 +153,7 @@ final class Estados{
 
 
 
-    static void verificaEnemy1(Enemies enemy1, MissileBarrage enemyShot, Player player){
+    static void verificaEnemy1(Enemies enemy1, EnemyShot enemyShot, Player player){
         for(int i = 0; i < enemy1.getStates().length; i++){
 
             if(enemy1.getStates_value(i) == EXPLODING){
@@ -213,7 +213,7 @@ final class Estados{
         }
     }
 
-    static void verificaEnemy2(EnemyJR enemy2, MissileBarrage enemyShot, Player player){
+    static void verificaEnemy2(EnemyJR enemy2, EnemyShot enemyShot){
         for(int i = 0; i < enemy2.getStates().length; i++){
 
             if(enemy2.getStates_value(i) == EXPLODING){
@@ -288,6 +288,7 @@ final class Estados{
                 }
             }
         }
+
         if(Zillean.getCurrentTime() > enemy2.getNextEnemies()){
 
             int free = findFreeIndex(enemy2.getStates());
@@ -317,7 +318,7 @@ final class Estados{
         }
     }
 
-    static void verificaEnemyShot(MissileBarrage enemyShot){
+    static void verificaEnemyShot(EnemyShot enemyShot){
         for(int i = 0; i < enemyShot.getStates().length; i++){
 
             if(enemyShot.getStates_value(i) == ACTIVE){
@@ -335,5 +336,46 @@ final class Estados{
             }
         }
     }
-
 }
+
+final class Input{
+    static void verificaInput(Player player, PlayerShot playerShot){
+
+        if(player.getplayer_state() == ACTIVE){
+
+            if(GameLib.iskeyPressed(GameLib.KEY_UP)) player.setplayer_Y(player.getplayer_Y() - Zillean.getDelta() * player.getplayer_VY());
+            if(GameLib.iskeyPressed(GameLib.KEY_DOWN)) player.setplayer_Y(player.getplayer_Y() + Zillean.getDelta() * player.getplayer_VY());
+            if(GameLib.iskeyPressed(GameLib.KEY_LEFT)) player.setplayer_X(player.getplayer_X() - Zillean.getDelta() * player.getplayer_VX());
+            if(GameLib.iskeyPressed(GameLib.KEY_RIGHT)) player.setplayer_X(player.getplayer_X() + Zillean.getDelta() * player.getplayer_VX());
+            if(GameLib.iskeyPressed(GameLib.KEY_CONTROL)) {
+
+                if(Zillean.getCurrentTime() > player.getplayer_nextShot()){
+
+                    int free = findFreeIndex(playerShot.getStates());
+
+                    if(free < playerShot.getStates().length){
+
+                        playerShot.setX(free, player.getplayer_X());
+                        playerShot.setY(free, player.getplayer_Y() - 2 * player.getplayer_radius());
+                        playerShot.setplayerShotVX(free, 0.0);
+                        playerShot.setplayerShotVY(free, -1.0);
+                        playerShot.setStates_value(free, 1);
+                        player.setplayer_nextShot(Zillean.getCurrentTime() + 100);
+                    }
+                }
+            }
+        }
+
+        if(GameLib.iskeyPressed(GameLib.KEY_ESCAPE)) Zillean.setRunning(false);
+
+        /* Verificando se coordenadas do player ainda estão dentro	*/
+        /* da tela de jogo após processar entrada do usuário.       */
+
+        if(player.getplayer_X() < 0.0) player.setplayer_X(0.0);
+        if(player.getplayer_X() >= GameLib.WIDTH) player.setplayer_X(GameLib.WIDTH - 1);
+        if(player.getplayer_Y() < 25.0) player.setplayer_Y(25.0);
+        if(player.getplayer_Y() >= GameLib.HEIGHT) player.setplayer_Y(GameLib.HEIGHT - 1);
+
+    }
+}
+

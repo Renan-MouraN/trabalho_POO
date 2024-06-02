@@ -1,21 +1,20 @@
 package LimaOscarLima.CapitaoMagico;
 
 import LimaOscarLima.Interfaces.Interfaces_campeoes;
-import LimaOscarLima.Interfaces.Locate;
 
 import java.util.Arrays;
 
-public class Enemies implements Interfaces_campeoes, Locate{
-    private final int [] enemies_states;						    // estados
-    private final double [] enemies_X;					        // coordenadas x
-    private final double [] enemies_Y;					        // coordenadas y
-    private final double [] enemies_V;					        // velocidades
-    private final double [] enemies_angle;				        // ângulos (indicam direção do movimento)
-    private final double [] enemies_RV;					        // velocidades de rotação
-    private final double [] enemies_explosion_start;		        // instantes dos inícios das explosões
-    private final double [] enemies_explosion_end;		        // instantes dos finais da explosões
-    private final long [] enemies_nextShoot;				        // instantes do próximo tiro
-    private final double enemies_radius;							// raio (tamanho do inimigo 1)
+public class Enemies implements Interfaces_campeoes{
+    private final int [] enemies_states;						        // estados
+    private final double [] enemies_X;					                // coordenadas x
+    private final double [] enemies_Y;					                // coordenadas y
+    private final double [] enemies_V;					                // velocidades
+    private final double [] enemies_angle;				                // ângulos (indicam direção do movimento)
+    private final double [] enemies_RV;					                // velocidades de rotação
+    private final double [] enemies_explosion_start;		            // instantes dos inícios das explosões
+    private final double [] enemies_explosion_end;		                // instantes dos finais da explosões
+    private final long [] enemies_nextShoot;				            // instantes do próximo tiro
+    private final double enemies_radius;							    // raio (tamanho do inimigo 1)
     private long nextEnemies;
     
     public Enemies(int d, double enemies_radius, long nextEnemies){

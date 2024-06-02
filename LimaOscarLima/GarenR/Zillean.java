@@ -6,7 +6,6 @@ public class Zillean {
     private static long delta;
     private static long currentTime;
 
-
     public static boolean isRunning(){
         return running;
     }
@@ -18,6 +17,7 @@ public class Zillean {
     public static void setRunning(boolean value){
         running = value;
     }
+
     public static void setDelta(long l){delta = l;}
 
     public static void updateCurrentTime(){ currentTime = System.currentTimeMillis();}
