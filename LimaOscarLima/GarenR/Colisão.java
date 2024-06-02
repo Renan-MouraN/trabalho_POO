@@ -1,8 +1,9 @@
 package LimaOscarLima.GarenR;
 
-import LimaOscarLima.BaraoVermelho.Character;
-import LimaOscarLima.BaraoVermelho.Projectile;
+import LimaOscarLima.BaraoVermelho.Player;
+import LimaOscarLima.BaraoVermelho.PlayerShot;
 import LimaOscarLima.CapitaoMagico.*;
+import LimaOscarLima.GarenR.*;
 
 public class Colisão {
 
@@ -10,7 +11,7 @@ public class Colisão {
     public static final int ACTIVE = 1;
     public static final int EXPLODING = 2;
 
-    static void PlayerProjetil(Character player, MissileBarrage e_projectile, long currentTime){
+    static void PlayerProjetil(Player player, MissileBarrage e_projectile){
 
         if(player.getCharacter_state() == ACTIVE){
             for(int i = 0; i < e_projectile.getStates().length; i++){
@@ -22,14 +23,14 @@ public class Colisão {
                 if(dist < (player.getCharacter_radius() + e_projectile.getRadius()) * 0.8){
 
                     player.setCharacter_state(EXPLODING);
-                    player.setCharacter_explosion_start(currentTime);
-                    player.setCharacter_explosion_end(currentTime + 2000);
+                    player.setCharacter_explosion_start(Zillean.getCurrentTime());
+                    player.setCharacter_explosion_end(Zillean.getCurrentTime() + 2000);
                 }
             }
         }
     }
 
-    static void PlayerInimigo(Character player, Enemies enemy1, EnemyJR enemy2, long currentTime){
+    static void PlayerInimigo(Player player, Enemies enemy1, EnemyJR enemy2){
 
         if(player.getCharacter_state() == ACTIVE){
             for(int i = 0; i < enemy1.getStates().length; i++){
@@ -41,8 +42,8 @@ public class Colisão {
                 if(dist < (player.getCharacter_radius() + enemy1.getRadius()) * 0.8){
 
                     player.setCharacter_state(EXPLODING);
-                    player.setCharacter_explosion_start(currentTime);
-                    player.setCharacter_explosion_end(currentTime + 2000);
+                    player.setCharacter_explosion_start(Zillean.getCurrentTime());
+                    player.setCharacter_explosion_end(Zillean.getCurrentTime() + 2000);
                 }
             }
 
@@ -55,30 +56,30 @@ public class Colisão {
                 if(dist < (player.getCharacter_radius() + enemy2.getRadius()) * 0.8){
 
                     player.setCharacter_state(EXPLODING);
-                    player.setCharacter_explosion_start(currentTime);
-                    player.setCharacter_explosion_end(currentTime + 2000);
+                    player.setCharacter_explosion_start(Zillean.getCurrentTime());
+                    player.setCharacter_explosion_end(Zillean.getCurrentTime() + 2000);
                 }
             }
         }
     }
 
-    static void InimigoProjetil (Enemies enemy1, EnemyJR enemy2, Projectile projectile, long currentTime) {
+    static void InimigoProjetil (Enemies enemy1, EnemyJR enemy2, PlayerShot playerShot) {
 
-        for (int k = 0; k < projectile.getStates().length; k++) {
+        for (int k = 0; k < playerShot.getStates().length; k++) {
 
             for (int i = 0; i < enemy1.getStates().length; i++) {
 
                 if (enemy1.getStates_value(i) == ACTIVE) {
 
-                    double dx = enemy1.getX(i) - projectile.getX(k);
-                    double dy = enemy1.getY(i) - projectile.getY(k);
+                    double dx = enemy1.getX(i) - playerShot.getX(k);
+                    double dy = enemy1.getY(i) - playerShot.getY(k);
                     double dist = Math.sqrt(dx * dx + dy * dy);
 
                     if (dist < enemy1.getRadius()) {
 
                         enemy1.setStates_value(i, EXPLODING);
-                        enemy1.setExplosion_start(i, currentTime);
-                        enemy1.setExplosion_end(i, currentTime + 500);
+                        enemy1.setExplosion_start(i, Zillean.getCurrentTime());
+                        enemy1.setExplosion_end(i, Zillean.getCurrentTime() + 500);
                     }
                 }
             }
@@ -87,26 +88,26 @@ public class Colisão {
 
                 if (enemy2.getStates_value(i) == ACTIVE) {
 
-                    double dx = enemy2.getX(i) - projectile.getX(k);
-                    double dy = enemy2.getY(i) - projectile.getY(k);
+                    double dx = enemy2.getX(i) - playerShot.getX(k);
+                    double dy = enemy2.getY(i) - playerShot.getY(k);
                     double dist = Math.sqrt(dx * dx + dy * dy);
 
                     if (dist < enemy2.getRadius()) {
 
                         enemy2.setStates_value(i, EXPLODING);
-                        enemy2.setExplosion_start(i, currentTime);
-                        enemy2.setExplosion_end(i, currentTime + 500);
+                        enemy2.setExplosion_start(i, Zillean.getCurrentTime());
+                        enemy2.setExplosion_end(i, Zillean.getCurrentTime() + 500);
                     }
                 }
             }
         }
     }
 
-    public static void verificaColisão(Character player, Enemies enemy1, EnemyJR enemy2, Projectile projectile, MissileBarrage e_projectile, long currentTime){
+    public static void verificaColisão(Player player, Enemies enemy1, EnemyJR enemy2, PlayerShot playerShot, MissileBarrage e_projectile){
 
-        PlayerProjetil(player, e_projectile, currentTime);
-        PlayerInimigo(player, enemy1, enemy2, currentTime);
-        InimigoProjetil(enemy1, enemy2, projectile, currentTime);
+        PlayerProjetil(player, e_projectile);
+        PlayerInimigo(player, enemy1, enemy2);
+        InimigoProjetil(enemy1, enemy2, playerShot);
 
     }
 

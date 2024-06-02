@@ -1,10 +1,9 @@
 package LimaOscarLima.UrfRider;
 
-import LimaOscarLima.GameLib;
+import LimaOscarLima.GameLib.GameLib;
 import LimaOscarLima.Interfaces.Interface;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Background implements Interface {

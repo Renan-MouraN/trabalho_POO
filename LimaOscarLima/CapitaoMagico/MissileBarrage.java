@@ -1,20 +1,20 @@
 package LimaOscarLima.CapitaoMagico;
 
-import LimaOscarLima.BaraoVermelho.Projectile;
+import LimaOscarLima.BaraoVermelho.PlayerShot;
 
 import java.util.Arrays;
 
-public class MissileBarrage extends Projectile {
-    double e_projectile_radius;
+public class MissileBarrage extends PlayerShot {
+    double enemyShot_radius;
     
     public MissileBarrage(int d, double c){
         super(d);
-        this.e_projectile_radius = c;
+        this.enemyShot_radius = c;
 
         Arrays.fill(getStates(), 0);
     }
     public double getRadius() {
-        return e_projectile_radius;
+        return enemyShot_radius;
     }
 
 }
