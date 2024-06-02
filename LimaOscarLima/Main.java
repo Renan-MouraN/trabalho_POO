@@ -4,10 +4,11 @@ import java.awt.Color;
 import LimaOscarLima.BaraoVermelho.*;
 import LimaOscarLima.CapitaoMagico.*;
 import LimaOscarLima.GameLib.GameLib;
+import LimaOscarLima.Interfaces.Constantes;
 import LimaOscarLima.UrfRider.Background;
 import LimaOscarLima.GarenR.*;
 
-public class Main {
+public class Main implements Constantes {
 
     /* Constantes relacionadas aos estados que os elementos   */
     /* do jogo (player, projeteis ou inimigos) podem assumir. */
@@ -132,229 +133,13 @@ public class Main {
             /* Verificação de colisões */
             /***************************/
 
-            Colisão.verificaColisão(player, enemy1, enemy2, playerShot, enemyShot);
+            Rammus.verificaColisão(player, enemy1, enemy2, playerShot, enemyShot);
 
             /***************************/
             /* Atualizações de estados */
             /***************************/
 
-            /* projeteis (player) */
-
-            for(int i = 0; i < playerShot.getStates().length; i++){
-
-                if(playerShot.getStates_value(i) == ACTIVE){
-
-                    /* verificando se projétil saiu da tela */
-                    if(playerShot.getY(i) < 0) {
-
-                        playerShot.setStates_value(i, INACTIVE);
-                    }
-                    else {
-
-                        playerShot.setX(i, playerShot.getX(i) + (playerShot.getplayerShotVX(i) * Zillean.getDelta()));
-                        playerShot.setY(i, playerShot.getY(i) + (playerShot.getplayerShotVY(i) * Zillean.getDelta()));
-                    }
-                }
-            }
-
-            /* projeteis (inimigos) */
-
-            for(int i = 0; i < enemyShot.getStates().length; i++){
-
-                if(enemyShot.getStates_value(i) == ACTIVE){
-
-                    /* verificando se projétil saiu da tela */
-                    if(enemyShot.getY(i) > GameLib.HEIGHT) {
-
-                        enemyShot.setStates_value(i, INACTIVE);
-                    }
-                    else {
-
-                        enemyShot.setX(i, enemyShot.getX(i) +(enemyShot.getplayerShotVX(i) * Zillean.getDelta()));
-                        enemyShot.setY(i, enemyShot.getY(i) +(enemyShot.getplayerShotVY(i) * Zillean.getDelta()));
-                    }
-                }
-            }
-
-            /* inimigos tipo 1 */
-
-            for(int i = 0; i < enemy1.getStates().length; i++){
-
-                if(enemy1.getStates_value(i) == EXPLODING){
-
-                    if(Zillean.getCurrentTime() > enemy1.getExplosion_end(i)){
-
-                        enemy1.setStates_value(i, INACTIVE);
-                    }
-                }
-
-                if(enemy1.getStates_value(i) == ACTIVE){
-
-                    /* verificando se inimigo saiu da tela */
-                    if(enemy1.getY(i) > GameLib.HEIGHT + 10) {
-
-                        enemy1.setStates_value(i, INACTIVE);
-                    }
-                    else {
-
-                        enemy1.setX(i, enemy1.getX(i) + (enemy1.getV(i) * Math.cos(enemy1.getAngle(i)) * Zillean.getDelta()));
-                        enemy1.setY(i, enemy1.getY(i) + (enemy1.getV(i) * Math.sin(enemy1.getAngle(i)) * Zillean.getDelta() *(-1.0)));
-                        enemy1.setAngle(i, enemy1.getAngle(i) + (enemy1.getRV(i) * Zillean.getDelta()));
-
-                        if(Zillean.getCurrentTime() > enemy1.getNextShot(i) && enemy1.getY(i) < player.getplayer_Y()){
-
-                            int free = findFreeIndex(enemyShot.getStates());
-
-                            if(free < enemyShot.getStates().length){
-
-                                enemyShot.setX(free, enemy1.getX(i));
-                                enemyShot.setY(free, enemy1.getY(i));
-                                enemyShot.setplayerShotVX(free, Math.cos(enemy1.getAngle(i)) * 0.45);
-                                enemyShot.setplayerShotVY(free, Math.sin(enemy1.getAngle(i)) * 0.45 * (-1.0));
-                                enemyShot.setStates_value(free, 1);
-
-                                enemy1.setNext_Shoot(i, (long) (Zillean.getCurrentTime() + 200 + Math.random() * 500));
-                            }
-                        }
-                    }
-                }
-            }
-
-            /* inimigos tipo 2 */
-
-            for(int i = 0; i < enemy2.getStates().length; i++){
-
-                if(enemy2.getStates_value(i) == EXPLODING){
-
-                    if(Zillean.getCurrentTime() > enemy2.getExplosion_end(i)){
-
-                        enemy2.setStates_value(i, INACTIVE);
-                    }
-                }
-
-                if(enemy2.getStates_value(i) == ACTIVE){
-
-                    /* verificando se inimigo saiu da tela */
-                    if(	enemy2.getX(i) < -10 || enemy2.getX(i) > GameLib.WIDTH + 10 ) {
-
-                        enemy2.setStates_value(i, INACTIVE);
-                    }
-                    else {
-
-                        boolean shootNow = false;
-                        double previousY = enemy2.getY(i);
-
-                        enemy2.setX(i, enemy2.getX(i) + (enemy2.getV(i) * Math.cos(enemy2.getAngle(i)) * Zillean.getDelta()));
-                        enemy2.setY(i, enemy2.getY(i) + (enemy2.getV(i) * Math.sin(enemy2.getAngle(i)) * Zillean.getDelta() * (-1.0)));
-                        enemy2.setAngle(i, enemy2.getAngle(i) +(enemy2.getRV(i) * Zillean.getDelta()));
-
-                        double threshold = GameLib.HEIGHT * 0.30;
-
-                        if(previousY < threshold && enemy2.getY(i) >= threshold) {
-
-                            if(enemy2.getX(i) < GameLib.WIDTH / 2) enemy2.setRV(i, 0.003);
-                            else enemy2.setRV(i, -0.003);
-                        }
-
-                        if(enemy2.getRV(i) > 0 && Math.abs(enemy2.getAngle(i) - 3 * Math.PI) < 0.05){
-
-                            enemy2.setRV(i, 0.0);
-                            enemy2.setAngle(i, 3 * Math.PI);
-                            shootNow = true;
-                        }
-
-                        if(enemy2.getRV(i) < 0 && Math.abs(enemy2.getAngle(i)) < 0.05){
-
-                            enemy2.setRV(i, 0.0);
-                            enemy2.setAngle(i, 0.0);
-                            shootNow = true;
-                        }
-
-                        if(shootNow){
-
-                            double [] angles = { Math.PI/2 + Math.PI/8, Math.PI/2, Math.PI/2 - Math.PI/8 };
-                            int [] freeArray = findFreeIndex(enemyShot.getStates(), angles.length);
-
-                            for(int k = 0; k < freeArray.length; k++){
-
-                                int free = freeArray[k];
-
-                                if(free < enemyShot.getStates().length){
-
-                                    double a = angles[k] + Math.random() * Math.PI/6 - Math.PI/12;
-                                    double vx = Math.cos(a);
-                                    double vy = Math.sin(a);
-
-                                    enemyShot.setX(free, enemy2.getX(i));
-                                    enemyShot.setY(free, enemy2.getY(i));
-                                    enemyShot.setplayerShotVX(free, vx * 0.30);
-                                    enemyShot.setplayerShotVY(free, vy * 0.30);
-                                    enemyShot.setStates_value(free, 1);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            /* verificando se novos inimigos (tipo 1) devem ser "lançados" */
-
-            if(Zillean.getCurrentTime() > enemy1.getNextEnemies()){
-
-                int free = findFreeIndex(enemy1.getStates());
-
-                if(free < enemy1.getStates().length){
-
-                    enemy1.setX(free, Math.random() * (GameLib.WIDTH - 20.0) + 10.0);
-                    enemy1.setY(free, -10.0);
-                    enemy1.setV(free, 0.20 + Math.random() * 0.15);
-                    enemy1.setAngle(free, 3 * Math.PI / 2);
-                    enemy1.setRV(free, 0.0);
-                    enemy1.setStates_value(free, ACTIVE);
-                    enemy1.setNext_Shoot(free, Zillean.getCurrentTime() + 500);
-                    enemy1.setNextEnemies(Zillean.getCurrentTime() + 500);
-                }
-            }
-
-            /* verificando se novos inimigos (tipo 2) devem ser "lançados" */
-
-            if(Zillean.getCurrentTime() > enemy2.getNextEnemies()){
-
-                int free = findFreeIndex(enemy2.getStates());
-
-                if(free < enemy2.getStates().length){
-
-                    enemy2.setX(free, enemy2.getEnemyJR_spawnX());
-                    enemy2.setY(free, -10.0);
-                    enemy2.setV(free, 0.42);
-                    enemy2.setAngle(free, (3 * Math.PI) / 2);
-                    enemy2.setRV(free, 0.0);
-                    enemy2.setStates_value(free, ACTIVE);
-
-                    enemy2.addCount();
-
-                    if(enemy2.getEnemyJR_count() < 10){
-
-                        enemy2.setNextEnemies(Zillean.getCurrentTime() + 120);
-                    }
-                    else {
-
-                        enemy2.setEnemyJR_count(0);
-                        enemy2.setEnemyJR_spawnX(Math.random() > 0.5 ? GameLib.WIDTH * 0.2 : GameLib.WIDTH * 0.8);
-                        enemy2.setNextEnemies((long) (Zillean.getCurrentTime() + 3000 + Math.random() * 3000));
-                    }
-                }
-            }
-
-            /* Verificando se a explosão do player já acabou.         */
-            /* Ao final da explosão, o player volta a ser controlável */
-            if(player.getplayer_state() == EXPLODING){
-
-                if(Zillean.getCurrentTime() > player.getplayer_explosion_end()){
-
-                    player.setplayer_state(ACTIVE);
-                }
-            }
+            Rammus.verificaEstados(player, enemy1, enemy2, playerShot, enemyShot);
 
             /********************************************/
             /* Verificando entrada do usuário (teclado) */

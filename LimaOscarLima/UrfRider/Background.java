@@ -1,12 +1,11 @@
 package LimaOscarLima.UrfRider;
 
 import LimaOscarLima.GameLib.GameLib;
-import LimaOscarLima.Interfaces.Interface;
 
 import java.awt.*;
 import java.util.Arrays;
 
-public class Background implements Interface {
+public class Background{
     private double [] background_X;
     private double [] background_Y;
     private double background_speed;

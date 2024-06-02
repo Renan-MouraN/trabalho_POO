@@ -5,9 +5,9 @@ public class Player {
     private int player_state;
     private double player_X;
     private double player_Y;
-    private double player_VX;
-    private double player_VY;
-    private double player_radius;
+    private final double player_VX;
+    private final double player_VY;
+    private final double player_radius;
     private double player_explosion_start;
     private double player_explosion_end;
     private long player_nextShot;

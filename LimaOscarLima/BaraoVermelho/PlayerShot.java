@@ -5,11 +5,11 @@ import LimaOscarLima.Interfaces.Interfaces_Bonecos;
 import java.util.Arrays;
 
 public class PlayerShot implements Interfaces_Bonecos{
-    private int [] playerShot_states;
-    private double [] playerShot_X;
-    private double [] playerShot_Y;
-    private double [] playerShot_VX;
-    private double [] playerShot_VY;
+    private final int [] playerShot_states;
+    private final double [] playerShot_X;
+    private final double [] playerShot_Y;
+    private final double [] playerShot_VX;
+    private final double [] playerShot_VY;
 
 
     public PlayerShot(int d){
