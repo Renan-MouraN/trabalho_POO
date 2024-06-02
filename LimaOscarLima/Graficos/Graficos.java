@@ -6,7 +6,7 @@ import LimaOscarLima.CapitaoMagico.Enemies;
 import LimaOscarLima.CapitaoMagico.EnemyJR;
 import LimaOscarLima.CapitaoMagico.EnemyShot;
 import LimaOscarLima.GameLib.*;
-import LimaOscarLima.GarenR.Zillean;
+import LimaOscarLima.Util.Utilidades;
 
 import java.awt.*;
 
@@ -30,7 +30,7 @@ class Render{
     // Desenha player
     static void desenharPlayer(Player player) {
         if (player.getplayer_state() == EXPLODING) {
-            double alpha = (Zillean.getCurrentTime() - player.getplayer_explosion_start()) / (player.getplayer_explosion_end() - player.getplayer_explosion_start());
+            double alpha = (Utilidades.getCurrentTime() - player.getplayer_explosion_start()) / (player.getplayer_explosion_end() - player.getplayer_explosion_start());
             GameLib.drawExplosion(player.getplayer_X(), player.getplayer_Y(), alpha);
         } else {
             GameLib.setColor(Color.BLUE);
@@ -67,7 +67,7 @@ class Render{
         for (int i = 0; i < enemy1.getStates().length; i++) {
             if (enemy1.getStates_value(i) == EXPLODING) {
 
-                double alpha = (Zillean.getCurrentTime() - enemy1.getExplosion_start(i)) / (enemy1.getExplosion_end(i) - enemy1.getExplosion_start(i));
+                double alpha = (Utilidades.getCurrentTime() - enemy1.getExplosion_start(i)) / (enemy1.getExplosion_end(i) - enemy1.getExplosion_start(i));
                 GameLib.drawExplosion(enemy1.getX(i), enemy1.getY(i), alpha);
             }
 
@@ -84,7 +84,7 @@ class Render{
 
             if(enemy2.getStates_value(i) == EXPLODING){
 
-                double alpha = (Zillean.getCurrentTime() - enemy2.getExplosion_start(i)) / (enemy2.getExplosion_end(i) - enemy2.getExplosion_start(i));
+                double alpha = (Utilidades.getCurrentTime() - enemy2.getExplosion_start(i)) / (enemy2.getExplosion_end(i) - enemy2.getExplosion_start(i));
                 GameLib.drawExplosion(enemy2.getX(i), enemy2.getY(i), alpha);
             }
 

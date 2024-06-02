@@ -1,10 +1,9 @@
 package LimaOscarLima.Graficos;
 
 import LimaOscarLima.GameLib.GameLib;
-import LimaOscarLima.GarenR.Zillean;
+import LimaOscarLima.Util.*;
 
 import java.awt.*;
-import java.util.Arrays;
 
 public class Background{
     private final double [] background_X;
@@ -75,7 +74,7 @@ public class Background{
     static void desenhaAux(Background b, int d, Color cor){
 
         GameLib.setColor(cor);
-        b.setBackground_count(b.getBackground_count() + (b.getBackground_speed() * Zillean.getDelta()));
+        b.setBackground_count(b.getBackground_count() + (b.getBackground_speed() * Utilidades.getDelta()));
 
         for(int i = 0; i < b.getBackground_X().length; i++){
 

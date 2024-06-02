@@ -2,10 +2,10 @@ package LimaOscarLima;
 
 import LimaOscarLima.BaraoVermelho.*;
 import LimaOscarLima.CapitaoMagico.*;
-import LimaOscarLima.GameLib.GameLib;
-import LimaOscarLima.Graficos.Graficos;
-import LimaOscarLima.Graficos.Background;
+import LimaOscarLima.GameLib.*;
+import LimaOscarLima.Graficos.*;
 import LimaOscarLima.GarenR.*;
+import LimaOscarLima.Util.*;
 
 public class Main{
 
@@ -22,16 +22,16 @@ public class Main{
 
         /* Indica que o jogo está em execução */
 
-        Zillean.setRunning(true);
+        Utilidades.setRunning(true);
 
         /* variáveis usadas no controle de tempo efetuado no main loop */
 
-        Zillean.updateCurrentTime();
+        Utilidades.updateCurrentTime();
 
         /* variáveis do player */
 
         Player player = new Player(ACTIVE, GameLib.WIDTH / 2, GameLib.HEIGHT * 0.90, 0.25,
-                0.25, 12, 0.0, 0.0, Zillean.getCurrentTime());
+                0.25, 12, 0.0, 0.0, Utilidades.getCurrentTime());
 
         /* variáveis dos projéteis disparados pelo player */
 
@@ -39,11 +39,11 @@ public class Main{
 
         /* variáveis dos inimigos tipo 1 */
 
-        Enemies enemy1 = new Enemies(10, 9.0, Zillean.getCurrentTime() + 2000);
+        Enemies enemy1 = new Enemies(10, 9.0, Utilidades.getCurrentTime() + 2000);
 
         /* variáveis dos inimigos tipo 2 */
 
-        EnemyJR enemy2 = new EnemyJR(10, 12.0, Zillean.getCurrentTime() + 7000,GameLib.WIDTH * 0.20, 0);
+        EnemyJR enemy2 = new EnemyJR(10, 12.0, Utilidades.getCurrentTime() + 7000,GameLib.WIDTH * 0.20, 0);
 
         /* variáveis dos projéteis lançados pelos inimigos (tanto tipo 1, quanto tipo 2) */
 
@@ -82,21 +82,11 @@ public class Main{
         /*                                                                                               */
         /*************************************************************************************************/
 
-        while(Zillean.isRunning()){
-
-            /* Usada para atualizar o estado dos elementos do jogo    */
-            /* (player, projéteis e inimigos) "delta" indica quantos  */
-            /* ms se passaram desde a última atualização.             */
-
-            Zillean.setDelta(System.currentTimeMillis() - Zillean.getCurrentTime());
-
-            /* Já a variável "currentTime" nos dá o timestamp atual.  */
-
-            Zillean.updateCurrentTime();
+        while(Utilidades.isRunning()){
 
             /* Verificação de colisões, estados e inputs*/
 
-            Rammus.mainLoop(player, enemy1, enemy2, playerShot, enemyShot);
+            Rammus.mainLoop(player, playerShot, enemy1, enemy2, enemyShot);
 
             /* Desenho da cena */
 
@@ -108,7 +98,7 @@ public class Main{
 
             /* faz uma pausa de modo que cada execução do laço do main loop demore aproximadamente 5 ms. */
 
-            Zillean.busyWait(Zillean.getCurrentTime() + 5);
+            Utilidades.busyWait(Utilidades.getCurrentTime() + 5);
 
             //apaguei os /******/ msm acho ruim chama o batman
         }
