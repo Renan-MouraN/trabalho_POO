@@ -1,5 +1,8 @@
 package LimaOscarLima.Util;
 
+import LimaOscarLima.gameObjects.gameObject;
+import java.util.ArrayList;
+
 import static LimaOscarLima.Main.*;
 
 public class Utilidades {
@@ -35,13 +38,13 @@ public class Utilidades {
     /* Encontra e devolve o primeiro índice do  */
     /* array referente a uma posição "inativa". */
 
-    public static int findFreeIndex(int [] stateArray){
+    public static int findFreeIndex(ArrayList <gameObject> stateArray){
 
         int i;
 
-        for(i = 0; i < stateArray.length; i++){
+        for(i = 0; i < stateArray.size() + 1; i++){
 
-            if(stateArray[i] == INACTIVE) break;
+            if(stateArray.get(i).getState() == INACTIVE) break;
         }
 
         return i;
@@ -51,14 +54,14 @@ public class Utilidades {
     /* de índices é defnida através do parâmetro "amount") do */
     /* array, referentes a posições "inativas".               */
 
-    public static int [] findFreeIndex(int [] stateArray, int amount){
+    public static int [] findFreeIndex(ArrayList<gameObject> Array, int amount){
 
         int i, k;
-        int [] freeArray = { stateArray.length, stateArray.length, stateArray.length };
+        int [] freeArray = { Array.size(),  Array.size(),  Array.size() };
 
-        for(i = 0, k = 0; i < stateArray.length && k < amount; i++){
+        for(i = 0, k = 0; i <  Array.size() && k < amount; i++){
 
-            if(stateArray[i] == INACTIVE) {
+            if(Array.get(i).getState() == INACTIVE) {
 
                 freeArray[k] = i;
                 k++;

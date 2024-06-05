@@ -1,11 +1,11 @@
 package LimaOscarLima;
 
-import LimaOscarLima.BaraoVermelho.*;
-import LimaOscarLima.CapitaoMagico.*;
 import LimaOscarLima.GameLib.*;
 import LimaOscarLima.Graficos.*;
 import LimaOscarLima.GarenR.*;
 import LimaOscarLima.Util.*;
+import LimaOscarLima.gameObjects.multipleEntities.*;
+import LimaOscarLima.gameObjects.singleEntities.player;
 
 public class Main{
 
@@ -30,24 +30,24 @@ public class Main{
 
         /* variáveis do player */
 
-        Player player = new Player(ACTIVE, GameLib.WIDTH / 2, GameLib.HEIGHT * 0.90, 0.25,
+        player player = new player(ACTIVE, GameLib.WIDTH / 2, GameLib.HEIGHT * 0.90, 0.25,
                 0.25, 12, 0.0, 0.0, Utilidades.getCurrentTime());
 
         /* variáveis dos projéteis disparados pelo player */
 
-        PlayerShot playerShot = new PlayerShot(10);
+        shot playerShot = new shot();
 
         /* variáveis dos inimigos tipo 1 */
 
-        Enemies enemy1 = new Enemies(10, 9.0, Utilidades.getCurrentTime() + 2000);
+        enemy1 enemy1 = new enemy1(9.0, Utilidades.getCurrentTime() + 2000);
 
         /* variáveis dos inimigos tipo 2 */
 
-        EnemyJR enemy2 = new EnemyJR(10, 12.0, Utilidades.getCurrentTime() + 7000,GameLib.WIDTH * 0.20, 0);
+        enemy2 enemy2 = new enemy2( 12.0, Utilidades.getCurrentTime() + 7000,GameLib.WIDTH * 0.20, 0);
 
         /* variáveis dos projéteis lançados pelos inimigos (tanto tipo 1, quanto tipo 2) */
 
-        EnemyShot enemyShot = new EnemyShot(200, 2.0);
+        enemyShot enemyShot = new enemyShot( 2.0);
 
         /* estrelas que formam o fundo de primeiro plano */
 
