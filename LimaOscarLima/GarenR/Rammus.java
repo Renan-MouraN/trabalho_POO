@@ -16,6 +16,10 @@ public final class Rammus{
         Utilidades.updateCurrentTime();
 
         statesUpdatesPlayer.statePlayer(player, enemy1, enemy2, enemyShot);
+        stateUpdatesPlayerShots.verificaPlayerShot(playerShot);
+        statesUpdatesEnemy1.stateEnemy1(enemy1, enemyShot, player, playerShot);
+        stateUpdatesEnemy2.stateEnemy2(enemy2, playerShot, enemyShot);
+        stateUpdatesEnemyShots.verificaEnemyShot(enemyShot);
 
         Input.verificaInput(player, playerShot);
 
@@ -37,17 +41,9 @@ final class Input{
 
                 if(Utilidades.getCurrentTime() > player.getplayer_nextShot()){
 
-                    int free = findFreeIndex(playerShot.getArray());
+                    playerShot.addNewElement(ACTIVE, player.getplayer_X(), player.getplayer_Y() - 2 * player.getplayer_radius(), 0, -1.0);
+                    player.setplayer_nextShot(Utilidades.getCurrentTime() + 100);
 
-                    if(free < playerShot.getArray().size()){
-
-                        playerShot.setX(free, player.getplayer_X());
-                        playerShot.setY(free, player.getplayer_Y() - 2 * player.getplayer_radius());
-                        playerShot.setVX(free, 0.0);
-                        playerShot.setVY(free, -1.0);
-                        playerShot.setStateValue(free, 1);
-                        player.setplayer_nextShot(Utilidades.getCurrentTime() + 100);
-                    }
                 }
             }
         }
@@ -186,18 +182,9 @@ final class statesUpdatesEnemy1{
 
                         if(Utilidades.getCurrentTime() > enemy1.getNextShot(i) && enemy1.getY(i) < player.getplayer_Y()){
 
-                            int free = findFreeIndex(enemyShot.getArray());
+                            enemyShot.addNewElement(ACTIVE, enemy1.getX(i), enemy1.getY(i), Math.cos(enemy1.getAngle(i)) * 0.45, Math.sin(enemy1.getAngle(i)) * 0.45 * (-1.0));
+                            enemy1.setNext_Shoot(i, (long) (Utilidades.getCurrentTime() + 200 + Math.random() * 500));
 
-                            if(free < enemyShot.getArray().size()){
-
-                                enemyShot.setX(free, enemy1.getX(i));
-                                enemyShot.setY(free, enemy1.getY(i));
-                                enemyShot.setVX(free, Math.cos(enemy1.getAngle(i)) * 0.45);
-                                enemyShot.setVY(free, Math.sin(enemy1.getAngle(i)) * 0.45 * (-1.0));
-                                enemyShot.setStateValue(free, 1);
-
-                                enemy1.setNext_Shoot(i, (long) (Utilidades.getCurrentTime() + 200 + Math.random() * 500));
-                            }
                         }
                     }
                 }
@@ -214,6 +201,11 @@ final class statesUpdatesEnemy1{
                     enemy1.setEnemiesSpawnTime(Utilidades.getCurrentTime() + 500);
 
             }
+        }
+
+        static void stateEnemy1(enemy1 enemy1, enemyShot enemyShot, player player, shot playerShot){
+            verificaEnemy1( enemy1,  enemyShot, player);
+            inimigoProjetil( enemy1, playerShot);
         }
 }
 
@@ -293,7 +285,7 @@ final class stateUpdatesEnemy2{
                     if(shootNow){
 
                         double [] angles = { Math.PI/2 + Math.PI/8, Math.PI/2, Math.PI/2 - Math.PI/8 };
-                        int [] freeArray = findFreeIndex(enemyShot.getArray(), angles.length);
+                        int [] freeArray = findFreeIndexArray(enemyShot.getArray(), angles.length);
 
                         for(int k = 0; k < freeArray.length; k++){
 
@@ -319,18 +311,12 @@ final class stateUpdatesEnemy2{
 
         if(Utilidades.getCurrentTime() > enemy2.getEnemiesSpawnTime()){
 
-            int free = findFreeIndex(enemy2.getArray());
+            int free = enemy2.getArray().size();
 
-            if(free < enemy2.getArray().size()){
-
-                enemy2.setX(free, enemy2.getEnemy2_spawnX());
-                enemy2.setY(free, -10.0);
-                enemy2.setVY(free, 0.42);
-                enemy2.setAngle(free, (3 * Math.PI) / 2);
-                enemy2.setRV(free, 0.0);
-                enemy2.setStateValue(free, ACTIVE);
-
-                enemy2.addCount();
+            enemy2.addNewElement(ACTIVE, enemy2.getEnemy2_spawnX(), -10.0, 0, 0.42);
+            enemy2.setAngle(free, (3 * Math.PI) / 2);
+            enemy2.setRV(free, 0.0);
+            enemy2.addCount();
 
                 if(enemy2.getEnemy2_count() < 10){
 
@@ -342,8 +328,13 @@ final class stateUpdatesEnemy2{
                     enemy2.setEnemy2_spawnX(Math.random() > 0.5 ? GameLib.WIDTH * 0.2 : GameLib.WIDTH * 0.8);
                     enemy2.setEnemiesSpawnTime((long) (Utilidades.getCurrentTime() + 3000 + Math.random() * 3000));
                 }
-            }
+
         }
+    }
+
+    static void stateEnemy2(enemy2 enemy2, shot playerShot, enemyShot enemyShot){
+        InimigoProjetil(enemy2, playerShot);
+        verificaEnemy2(enemy2, enemyShot);
     }
 }
 

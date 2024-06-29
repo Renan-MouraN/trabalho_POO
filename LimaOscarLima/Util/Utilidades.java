@@ -38,7 +38,7 @@ public class Utilidades {
     /* Encontra e devolve o primeiro índice do  */
     /* array referente a uma posição "inativa". */
 
-    public static int findFreeIndex(ArrayList <gameObject> stateArray){
+    public static int findFreeIndexArray(ArrayList <gameObject> stateArray){
 
         int i;
 
@@ -54,7 +54,7 @@ public class Utilidades {
     /* de índices é defnida através do parâmetro "amount") do */
     /* array, referentes a posições "inativas".               */
 
-    public static int [] findFreeIndex(ArrayList<gameObject> Array, int amount){
+    public static int [] findFreeIndexArray(ArrayList<gameObject> Array, int amount){
 
         int i, k;
         int [] freeArray = { Array.size(),  Array.size(),  Array.size() };
