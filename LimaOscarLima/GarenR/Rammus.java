@@ -95,7 +95,7 @@ final class statesUpdatesPlayer{
 
                     player.setplayer_state(EXPLODING);
                     player.setplayer_explosion_start(Utilidades.getCurrentTime());
-                    player.setplayer_explosion_end(Utilidades.getCurrentTime() + 2000);
+                    player.setplayer_explosion_end(Utilidades.getCurrentTime() + 2000L);
                 }
             }
 
@@ -109,7 +109,7 @@ final class statesUpdatesPlayer{
 
                     player.setplayer_state(EXPLODING);
                     player.setplayer_explosion_start(Utilidades.getCurrentTime());
-                    player.setplayer_explosion_end(Utilidades.getCurrentTime() + 2000);
+                    player.setplayer_explosion_end(Utilidades.getCurrentTime() + 2000L);
                 }
             }
         }
@@ -192,7 +192,7 @@ final class statesUpdatesEnemy1{
             if(Utilidades.getCurrentTime() > enemy1.getEnemiesSpawnTime()){
 
                 //velocidade original funcionando
-                //cpa q o bug de spawn do enemy2 ta consertado, mas o player sempre explode no centro da tela
+                //cpa q o bug de spawn do enemy2 ta consertado, mas o player as vezes explode no centro da tela
                 enemy1.addNewElement(ACTIVE, Math.random() * (GameLib.WIDTH - 20.0) + 10.0, -10, 0, 0.2 + Math.random() * 0.15);
                     int free = enemy1.getArray().size() - 1;
 
@@ -327,7 +327,7 @@ final class stateUpdatesEnemy2{
 
                     enemy2.setEnemy2_count(0);
                     enemy2.setEnemy2_spawnX(Math.random() > 0.5 ? 96.0 : 384.0);
-                    enemy2.setEnemiesSpawnTime((long) (Utilidades.getCurrentTime() + 3000 + Math.random() * 3000));
+                    enemy2.setEnemiesSpawnTime((long)((double)(Utilidades.getCurrentTime() + 3000L) + Math.random() * 3000));
                 }
 
         }
