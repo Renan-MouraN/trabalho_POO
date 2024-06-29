@@ -193,6 +193,7 @@ final class statesUpdatesEnemy1{
 
                 //velocidade original funcionando
                 //cpa q o bug de spawn do enemy2 ta consertado, mas o player as vezes explode no centro da tela
+                //problema qnd mata mais de um inimigo do tipo 2
                 enemy1.addNewElement(ACTIVE, Math.random() * (GameLib.WIDTH - 20.0) + 10.0, -10, 0, 0.2 + Math.random() * 0.15);
                     int free = enemy1.getArray().size() - 1;
 
