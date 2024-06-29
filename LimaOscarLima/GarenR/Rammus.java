@@ -148,8 +148,8 @@ final class statesUpdatesEnemy1{
                     if (dist < enemy1.getRadius()) {
 
                         enemy1.setStateValue(i, EXPLODING);
-                        enemy1.setExplosion_start(i, Utilidades.getCurrentTime());
-                        enemy1.setExplosion_end(i, Utilidades.getCurrentTime() + 500);
+                        enemy1.addExplosion_start(Utilidades.getCurrentTime());
+                        enemy1.addExplosion_end(Utilidades.getCurrentTime() + 500);
                     }
                 }
             }
@@ -161,7 +161,7 @@ final class statesUpdatesEnemy1{
 
             if(enemy1.getStateValue(i) == EXPLODING){
 
-                if(Utilidades.getCurrentTime() > enemy1.getExplosion_end(i)){
+                if(Utilidades.getCurrentTime() > enemy1.getExplosion_end()){
 
                         enemy1.setStateValue(i, INACTIVE);
                     }
@@ -176,8 +176,8 @@ final class statesUpdatesEnemy1{
                     }
                     else {
 
-                        enemy1.setX(i, enemy1.getX(i) + (enemy1.getVY(i) * Math.cos(enemy1.getAngle(i)) * Utilidades.getDelta()));
-                        enemy1.setY(i, enemy1.getY(i) + (enemy1.getVY(i) * Math.sin(enemy1.getAngle(i)) * Utilidades.getDelta() *(-1.0)));
+                        enemy1.setX(i, enemy1.getX(i) + (enemy1.getVX(i) * Math.cos(enemy1.getAngle(i)) * Utilidades.getDelta()));
+                        enemy1.setY(i, enemy1.getY(i) + (enemy1.getVY(i) * Math.sin(enemy1.getAngle(i)) * Utilidades.getDelta() * (-1.0)));
                         enemy1.setAngle(i, enemy1.getAngle(i) + (enemy1.getRV(i) * Utilidades.getDelta()));
 
                         if(Utilidades.getCurrentTime() > enemy1.getNextShot(i) && enemy1.getY(i) < player.getplayer_Y()){
@@ -191,21 +191,23 @@ final class statesUpdatesEnemy1{
             }
             if(Utilidades.getCurrentTime() > enemy1.getEnemiesSpawnTime()){
 
-                    enemy1.addNewElement(ACTIVE, Math.random() * (GameLib.WIDTH - 20.0) + 10.0, -10, 0, 10);
-                    int free = enemy1.getArray().size();
+                //mudei a velocidade pq tava dando merda, tentem arrumar pra velocidade original
+                //as vezes buga e o roxo n spawna
+                enemy1.addNewElement(ACTIVE, Math.random() * (GameLib.WIDTH - 20.0) + 10.0, -10, 0, 0.2);
+                    int free = enemy1.getArray().size() - 1;
 
-                    enemy1.setAngle(free, 3 * Math.PI / 2);
-                    enemy1.setRV(free, 0.0);
+                    enemy1.addAngle(3 * Math.PI / 2);
+                    enemy1.addRV(0.0);
                     enemy1.setStateValue(free, ACTIVE);
-                    enemy1.setNext_Shoot(free, Utilidades.getCurrentTime() + 500);
+                    enemy1.addNext_Shoot(Utilidades.getCurrentTime() + 500);
                     enemy1.setEnemiesSpawnTime(Utilidades.getCurrentTime() + 500);
 
             }
         }
 
         static void stateEnemy1(enemy1 enemy1, enemyShot enemyShot, player player, shot playerShot){
-            verificaEnemy1( enemy1,  enemyShot, player);
-            inimigoProjetil( enemy1, playerShot);
+            verificaEnemy1(enemy1,  enemyShot, player);
+            inimigoProjetil(enemy1, playerShot);
         }
 }
 
@@ -225,8 +227,8 @@ final class stateUpdatesEnemy2{
                     if (dist < enemy2.getRadius()) {
 
                         enemy2.setStateValue(i, EXPLODING);
-                        enemy2.setExplosion_start(i, Utilidades.getCurrentTime());
-                        enemy2.setExplosion_end(i, Utilidades.getCurrentTime() + 500);
+                        enemy2.addExplosion_start(Utilidades.getCurrentTime());
+                        enemy2.addExplosion_end(Utilidades.getCurrentTime() + 500);
                     }
                 }
             }
@@ -238,7 +240,7 @@ final class stateUpdatesEnemy2{
 
             if(enemy2.getStateValue(i) == EXPLODING){
 
-                if(Utilidades.getCurrentTime() > enemy2.getExplosion_end(i)){
+                if(Utilidades.getCurrentTime() > enemy2.getExplosion_end()){
 
                     enemy2.setStateValue(i, INACTIVE);
                 }
@@ -311,11 +313,10 @@ final class stateUpdatesEnemy2{
 
         if(Utilidades.getCurrentTime() > enemy2.getEnemiesSpawnTime()){
 
-            int free = enemy2.getArray().size();
 
             enemy2.addNewElement(ACTIVE, enemy2.getEnemy2_spawnX(), -10.0, 0, 0.42);
-            enemy2.setAngle(free, (3 * Math.PI) / 2);
-            enemy2.setRV(free, 0.0);
+            enemy2.addAngle((3 * Math.PI) / 2);
+            enemy2.addRV(0.0);
             enemy2.addCount();
 
                 if(enemy2.getEnemy2_count() < 10){

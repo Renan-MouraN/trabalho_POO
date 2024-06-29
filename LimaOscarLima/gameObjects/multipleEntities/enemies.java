@@ -51,10 +51,10 @@ public class enemies implements LimaOscarLima.Interfaces.multipleGameObjects{
     public double getRadius (){
         return enemies_radius;
     }
-    public double getExplosion_start(int i){
-        return enemies_explosion_start.get(i);
+    public double getExplosion_start(){
+        return enemies_explosion_start.getLast();
     }
-    public double getExplosion_end(int i){ return enemies_explosion_end.get(i); }
+    public double getExplosion_end(){ return enemies_explosion_end.getLast(); }
     public long getEnemiesSpawnTime(){
         return enemiesSpawnTime;
     }
@@ -73,12 +73,6 @@ public class enemies implements LimaOscarLima.Interfaces.multipleGameObjects{
     public void setAngle(int i, double d){
         enemies_angle.set(i, d);
     }
-    public void setExplosion_start(int i, double d){
-        enemies_explosion_start.set(i, d);
-    }
-    public void setExplosion_end(int i, double d){
-        enemies_explosion_end.set(i, d);
-    }
     public void setRV(int i, double d){
         enemies_RV.set(i, d);
     }
@@ -88,5 +82,9 @@ public class enemies implements LimaOscarLima.Interfaces.multipleGameObjects{
         enemiesSpawnTime = l;
     }
 
+    public void addAngle(double d) {enemies_angle.add(d);}
+    public void addRV(double d) {enemies_RV.add(d);}
+    public void addExplosion_start(double d) {enemies_explosion_start.add(d);}
+    public void addExplosion_end(double d){enemies_explosion_end.add(d);}
 }
 

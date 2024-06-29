@@ -15,4 +15,6 @@ public class enemy1 extends LimaOscarLima.gameObjects.multipleEntities.enemies {
     public long getNextShot(int i){ return enemies_nextShoot.get(i); }
 
     public void setNext_Shoot(int i, long l){ enemies_nextShoot.set(i, l); }
+
+    public void addNext_Shoot(long l){ enemies_nextShoot.add(l);}
 }

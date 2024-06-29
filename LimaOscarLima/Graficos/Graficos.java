@@ -64,7 +64,7 @@ class Render{
         for (int i = 0; i < enemy1.getArray().size(); i++) {
             if (enemy1.getStateValue(i) == EXPLODING) {
 
-                double alpha = (Utilidades.getCurrentTime() - enemy1.getExplosion_start(i)) / (enemy1.getExplosion_end(i) - enemy1.getExplosion_start(i));
+                double alpha = (Utilidades.getCurrentTime() - enemy1.getExplosion_start()) / (enemy1.getExplosion_end() - enemy1.getExplosion_start());
                 GameLib.drawExplosion(enemy1.getX(i), enemy1.getY(i), alpha);
             }
 
@@ -81,7 +81,7 @@ class Render{
 
             if(enemy2.getStateValue(i) == EXPLODING){
 
-                double alpha = (Utilidades.getCurrentTime() - enemy2.getExplosion_start(i)) / (enemy2.getExplosion_end(i) - enemy2.getExplosion_start(i));
+                double alpha = (Utilidades.getCurrentTime() - enemy2.getExplosion_start()) / (enemy2.getExplosion_end() - enemy2.getExplosion_start());
                 GameLib.drawExplosion(enemy2.getX(i), enemy2.getY(i), alpha);
             }
 
