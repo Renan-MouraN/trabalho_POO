@@ -191,9 +191,9 @@ final class statesUpdatesEnemy1{
             }
             if(Utilidades.getCurrentTime() > enemy1.getEnemiesSpawnTime()){
 
-                //mudei a velocidade pq tava dando merda, tentem arrumar pra velocidade original
-                //as vezes buga e o roxo n spawna
-                enemy1.addNewElement(ACTIVE, Math.random() * (GameLib.WIDTH - 20.0) + 10.0, -10, 0, 0.2);
+                //velocidade original funcionando
+                //cpa q o bug de spawn do enemy2 ta consertado, mas o player sempre explode no centro da tela
+                enemy1.addNewElement(ACTIVE, Math.random() * (GameLib.WIDTH - 20.0) + 10.0, -10, 0, 0.2 + Math.random() * 0.15);
                     int free = enemy1.getArray().size() - 1;
 
                     enemy1.addAngle(3 * Math.PI / 2);
@@ -228,7 +228,7 @@ final class stateUpdatesEnemy2{
 
                         enemy2.setStateValue(i, EXPLODING);
                         enemy2.addExplosion_start(Utilidades.getCurrentTime());
-                        enemy2.addExplosion_end(Utilidades.getCurrentTime() + 500);
+                        enemy2.addExplosion_end(Utilidades.getCurrentTime() + 500L);
                     }
                 }
             }
@@ -321,12 +321,12 @@ final class stateUpdatesEnemy2{
 
                 if(enemy2.getEnemy2_count() < 10){
 
-                    enemy2.setEnemiesSpawnTime(Utilidades.getCurrentTime() + 120);
+                    enemy2.setEnemiesSpawnTime(Utilidades.getCurrentTime() + 120L);
                 }
                 else {
 
                     enemy2.setEnemy2_count(0);
-                    enemy2.setEnemy2_spawnX(Math.random() > 0.5 ? GameLib.WIDTH * 0.2 : GameLib.WIDTH * 0.8);
+                    enemy2.setEnemy2_spawnX(Math.random() > 0.5 ? 96.0 : 384.0);
                     enemy2.setEnemiesSpawnTime((long) (Utilidades.getCurrentTime() + 3000 + Math.random() * 3000));
                 }
 
