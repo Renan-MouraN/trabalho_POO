@@ -10,7 +10,7 @@ import static LimaOscarLima.Util.Utilidades.*;
 
 public final class Rammus{
 
-    public static void mainLoop(player player, shot playerShot, enemy1 enemy1, enemy2 enemy2, enemyShot enemyShot){
+    public static void mainLoop(player player, shot playerShot, enemy1 enemy1, enemy2 enemy2, enemy3 enemy3, enemyShot enemyShot){
 
         Utilidades.setDelta(System.currentTimeMillis() - Utilidades.getCurrentTime());
         Utilidades.updateCurrentTime();
@@ -82,7 +82,7 @@ final class statesUpdatesPlayer{
         }
     }
 
-    private static void PlayerInimigo(player player, enemy1 enemy1, enemy2 enemy2){
+    private static void PlayerInimigo(player player, enemy1 enemy1, enemy2 enemy2, enemy3 enemy3){
 
         if(player.getplayer_state() == ACTIVE){
             for(int i = 0; i < enemy1.getArray().size(); i++){
@@ -125,9 +125,9 @@ final class statesUpdatesPlayer{
         }
     }
     
-    static void statePlayer(player player, enemy1 enemy1, enemy2 enemy2, enemyShot enemyShot){
+    static void statePlayer(player player, enemy1 enemy1, enemy2 enemy2, enemy3 enemy3, enemyShot enemyShot){
         PlayerProjetil(player, enemyShot);
-        PlayerInimigo(player, enemy1, enemy2);
+        PlayerInimigo(player, enemy1, enemy2, enemy3);
         verificaPlayer(player);
     }
 }
@@ -339,6 +339,122 @@ final class stateUpdatesEnemy2{
         verificaEnemy2(enemy2, enemyShot);
     }
 }
+
+final class statesUpdatesEnemy3 {
+
+    private static void InimigoProjetil(enemy3 enemy3, shot playerShot) {
+        for (int k = 0; k < playerShot.getArray().size(); k++) {
+            for (int i = 0; i < enemy3.getArray().size(); i++) {
+                if (enemy3.getStateValue(i) == ACTIVE) {
+                    double dx = enemy3.getX(i) - playerShot.getX(k);
+                    double dy = enemy3.getY(i) - playerShot.getY(k);
+                    double dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < enemy3.getRadius()) {
+                        enemy3.setStateValue(i, EXPLODING);
+                        enemy3.addExplosion_start(getCurrentTime());
+                        enemy3.addExplosion_end(getCurrentTime() + 500L);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void verificaEnemy3(enemy3 enemy3, enemyShot enemyShot) {
+        for (int i = 0; i < enemy3.getArray().size(); i++) {
+            if (enemy3.getStateValue(i) == EXPLODING) {
+                if (getCurrentTime() > enemy3.getExplosion_end()) {
+                    enemy3.setStateValue(i, INACTIVE);
+                }
+            }
+
+            if (enemy3.getStateValue(i) == ACTIVE) {
+                // verificando se inimigo saiu da tela
+                if (enemy3.getX(i) < -10 || enemy3.getX(i) > GameLib.WIDTH + 10) {
+                    enemy3.setStateValue(i, INACTIVE);
+                } else {
+                    boolean shootNow = false;
+                    long lastTime = 0;
+                    if(enemy3.getEnemy3_phase() == 0){
+                        if (enemy3.getX(i) == 120 && enemy3.getY(i) == 540) {
+                            enemy3.setEnemy3_phase(1);
+                            lastTime = getCurrentTime();
+                        }
+                        else if(enemy3.getX(i) < 120)
+                            enemy3.setX(i, enemy3.getX(i) + (enemy3.getVX(i) * getDelta()));
+
+                         else if(enemy3.getY(i) < 540)
+                             enemy3.setY(i, enemy3.getY(i) + (enemy3.getVY(i) * getDelta() * (-1.0)));
+
+                    }
+                    if(enemy3.getEnemy3_phase() == 2){
+                        if (enemy3.getX(i) == 360 && enemy3.getY(i) == 180) {
+                            enemy3.setEnemy3_phase(3);
+                            lastTime = getCurrentTime();
+                        }
+                        else if(enemy3.getX(i) < 360)
+                            enemy3.setX(i, enemy3.getX(i) + (enemy3.getVX(i) * getDelta()));
+
+                        else if(enemy3.getY(i) < 180)
+                            enemy3.setY(i, enemy3.getY(i) - (enemy3.getVY(i) * getDelta() * (-1.0)));
+                    }
+
+                    if(enemy3.getEnemy3_phase() == 2){
+                        if (enemy3.getX(i) == 500) {
+                            enemy3.setStateValue(i, INACTIVE);
+                        }
+                        else if(enemy3.getX(i) < 500)
+                            enemy3.setX(i, enemy3.getX(i) + (enemy3.getVX(i) * getDelta()));
+                    }
+
+                    if(enemy3.getEnemy3_phase() == 1 || enemy3.getEnemy3_phase() == 3){
+                        shootNow = true;
+                        if(lastTime + enemy3.getShootTime() <= getCurrentTime()){
+                            if(enemy3.getEnemy3_phase() < 2) enemy3.setEnemy3_phase(2);
+                            else enemy3.setEnemy3_phase(4);
+                        }
+
+                    }
+
+                    if (shootNow) {
+
+                        double [] angles = { 0, Math.PI/2, Math.PI, (Math.PI * 3)/2 };
+
+                        for(int m = 0; m < 3; m++){
+
+                            double a = angles[m];
+                            double vx = Math.cos(a);
+                            double vy = Math.sin(a);
+                            enemyShot.addEnemyShot(ACTIVE, enemy3.getX(i), enemy3.getY(i), vx * 0.30, vy * 0.30);
+                        }
+
+
+                    }
+
+                }
+            }
+            if (enemy3.getStateValue(i) == INACTIVE) {
+                enemy3.removeElement(i);
+            }
+        }
+
+        if (getCurrentTime() > enemy3.getEnemiesSpawnTime() && enemy3.getArray().isEmpty()) {
+            // Ajustando as posições de spawn dos inimigos
+            enemy3.addNewElement(ACTIVE, -10.0, -10.0, 0.42, 0.42);
+
+            enemy3.setEnemiesSpawnTime((long)((double)(getCurrentTime() + 3000L) + Math.random() * 3000));
+
+        }
+    }
+
+    static void stateEnemy3(enemy3 enemy3, shot playerShot, enemyShot enemyShot) {
+        InimigoProjetil(enemy3, playerShot);
+        verificaEnemy3(enemy3, enemyShot);
+    }
+}
+
+
+
 
 
 final class stateUpdatesPlayerShots{

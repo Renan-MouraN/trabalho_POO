@@ -29,6 +29,8 @@ public class Main{
         shot playerShot = new shot(); //objeto dos projéteis disparados pelo player
         enemy1 enemy1 = new enemy1(9.0, Utilidades.getCurrentTime() + 2000L); //objetos dos inimigos tipo 1
         enemy2 enemy2 = new enemy2( 12.0, Utilidades.getCurrentTime() + 7000L,GameLib.WIDTH * 0.20, 0); //objetos dos inimigos tipo 2
+        enemy3 enemy3 = new enemy3( 12.0, Utilidades.getCurrentTime() + 7000L,0, 10000L); //objetos dos inimigos tipo 3
+
         enemyShot enemyShot = new enemyShot( 2.0); //objetos dos projéteis lançados pelos inimigos (tanto tipo 1, quanto tipo 2)
 
         Background background1 = new Background(20,0.070,0.0); //estrelas que formam o fundo de primeiro plano
@@ -57,8 +59,8 @@ public class Main{
 
         while(Utilidades.isRunning()){
 
-            Rammus.mainLoop(player, playerShot, enemy1, enemy2, enemyShot); //Verificação de colisões, estados e inputs
-            Graficos.desenharCena(player, playerShot, enemyShot, enemy1, enemy2, background1, background2); //Desenho da cena
+            Rammus.mainLoop(player, playerShot, enemy1, enemy2, enemy3, enemyShot); //Verificação de colisões, estados e inputs
+            Graficos.desenharCena(player, playerShot, enemyShot, enemy1, enemy2, enemy3, background1, background2); //Desenho da cena
             GameLib.display(); //chamama a display() da classe GameLib atualiza o desenho exibido pela interface do jogo.
             Utilidades.busyWait(Utilidades.getCurrentTime() + 5L); //faz uma pausa de modo que cada execução do laço do main loop demore aproximadamente 5 ms.
         }

@@ -13,12 +13,14 @@ import static LimaOscarLima.Main.EXPLODING;
 
 public class Graficos {
 
-    public static void desenharCena(player player, shot playerShot, enemyShot enemyShot, enemies enemy1, enemy2 enemy2, Background background1, Background background2) {
+    public static void desenharCena(player player, shot playerShot, enemyShot enemyShot, enemies enemy1, enemy2 enemy2, enemy3 enemy3, Background background1, Background background2) {
         Render.desenharPlayer(player);
         Render.desenharProjeteis(playerShot);
         Render.desenharProjeteisInimigos(enemyShot);
         Render.desenharInimigo1(enemy1);
         Render.desenharInimigo2(enemy2);
+        Render.desenharInimigo3(enemy3);
+
         Background.DesenhaBackGround(background1,background2);
     }
 }
@@ -92,4 +94,30 @@ class Render{
             }
         }
     }
+
+    // Desenhando os inimigos do tipo Criado (3)
+    static void desenharInimigo3(enemy3 enemy3) {
+        for(int i = 0; i < enemy3.getArray().size(); i++){
+
+            if(enemy3.getStateValue(i) == EXPLODING){
+
+                double alpha = (Utilidades.getCurrentTime() - enemy3.getExplosion_start()) / (enemy3.getExplosion_end() - enemy3.getExplosion_start());
+                GameLib.drawExplosion(enemy3.getX(i), enemy3.getY(i), alpha);
+            }
+
+            if(enemy3.getStateValue(i) == ACTIVE){
+
+                GameLib.setColor(Color.WHITE);
+                GameLib.drawDiamond(enemy3.getX(i), enemy3.getY(i), enemy3.getRadius());
+            }
+        }
+    }
 }
+
+
+
+
+
+
+
+
