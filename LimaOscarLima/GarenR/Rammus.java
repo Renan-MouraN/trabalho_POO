@@ -4,6 +4,7 @@ import LimaOscarLima.gameObjects.multipleEntities.*;
 import LimaOscarLima.gameObjects.singleEntities.player;
 import LimaOscarLima.GameLib.GameLib;
 import LimaOscarLima.Util.Utilidades;
+import java.util.Random;
 
 import static LimaOscarLima.Main.*;
 import static LimaOscarLima.Util.Utilidades.*;
@@ -12,14 +13,15 @@ public final class Rammus{
 
     public static void mainLoop(player player, shot playerShot, enemy1 enemy1, enemy2 enemy2, enemy3 enemy3, enemyShot enemyShot){
 
-        Utilidades.setDelta(System.currentTimeMillis() - Utilidades.getCurrentTime());
-        Utilidades.updateCurrentTime();
+        setDelta(System.currentTimeMillis() - getCurrentTime());
+        updateCurrentTime();
 
-        statesUpdatesPlayer.statePlayer(player, enemy1, enemy2, enemyShot);
-        stateUpdatesPlayerShots.verificaPlayerShot(playerShot);
+        statesUpdatesPlayer.statePlayer(player, enemy1, enemy2, enemy3, enemyShot);
+        statesUpdatesPlayerShots.verificaPlayerShot(playerShot);
         statesUpdatesEnemy1.stateEnemy1(enemy1, enemyShot, player, playerShot);
-        stateUpdatesEnemy2.stateEnemy2(enemy2, playerShot, enemyShot);
-        stateUpdatesEnemyShots.verificaEnemyShot(enemyShot);
+        statesUpdatesEnemy2.stateEnemy2(enemy2, playerShot, enemyShot);
+        statesUpdatesEnemy3.stateEnemy3(enemy3 , playerShot, enemyShot);
+        statesUpdatesEnemyShots.verificaEnemyShot(enemyShot);
 
         Input.verificaInput(player, playerShot);
 
@@ -33,22 +35,22 @@ final class Input{
 
         if(player.getplayer_state() == ACTIVE){
 
-            if(GameLib.iskeyPressed(GameLib.KEY_UP)) player.setplayer_Y(player.getplayer_Y() - Utilidades.getDelta() * player.getplayer_VY());
-            if(GameLib.iskeyPressed(GameLib.KEY_DOWN)) player.setplayer_Y(player.getplayer_Y() + Utilidades.getDelta() * player.getplayer_VY());
-            if(GameLib.iskeyPressed(GameLib.KEY_LEFT)) player.setplayer_X(player.getplayer_X() - Utilidades.getDelta() * player.getplayer_VX());
-            if(GameLib.iskeyPressed(GameLib.KEY_RIGHT)) player.setplayer_X(player.getplayer_X() + Utilidades.getDelta() * player.getplayer_VX());
+            if(GameLib.iskeyPressed(GameLib.KEY_UP)) player.setplayer_Y(player.getplayer_Y() - getDelta() * player.getplayer_VY());
+            if(GameLib.iskeyPressed(GameLib.KEY_DOWN)) player.setplayer_Y(player.getplayer_Y() + getDelta() * player.getplayer_VY());
+            if(GameLib.iskeyPressed(GameLib.KEY_LEFT)) player.setplayer_X(player.getplayer_X() - getDelta() * player.getplayer_VX());
+            if(GameLib.iskeyPressed(GameLib.KEY_RIGHT)) player.setplayer_X(player.getplayer_X() + getDelta() * player.getplayer_VX());
             if(GameLib.iskeyPressed(GameLib.KEY_CONTROL)) {
 
-                if(Utilidades.getCurrentTime() > player.getplayer_nextShot()){
+                if(getCurrentTime() > player.getplayer_nextShot()){
 
                     playerShot.addNewElement(ACTIVE, player.getplayer_X(), player.getplayer_Y() - 2 * player.getplayer_radius(), 0, -1.0);
-                    player.setplayer_nextShot(Utilidades.getCurrentTime() + 100);
+                    player.setplayer_nextShot(getCurrentTime() + 100);
 
                 }
             }
         }
 
-        if(GameLib.iskeyPressed(GameLib.KEY_ESCAPE)) Utilidades.setRunning(false);
+        if(GameLib.iskeyPressed(GameLib.KEY_ESCAPE)) setRunning(false);
 
         /* Verificando se coordenadas do player ainda estão dentro	*/
         /* da tela de jogo após processar entrada do usuário.       */
@@ -75,8 +77,8 @@ final class statesUpdatesPlayer{
                 if(dist < (player.getplayer_radius() + enemyShot.getRadius()) * 0.8){
 
                     player.setplayer_state(EXPLODING);
-                    player.setplayer_explosion_start(Utilidades.getCurrentTime());
-                    player.setplayer_explosion_end(Utilidades.getCurrentTime() + 2000);
+                    player.setplayer_explosion_start(getCurrentTime());
+                    player.setplayer_explosion_end(getCurrentTime() + 2000);
                 }
             }
         }
@@ -94,8 +96,8 @@ final class statesUpdatesPlayer{
                 if(dist < (player.getplayer_radius() + enemy1.getRadius()) * 0.8){
 
                     player.setplayer_state(EXPLODING);
-                    player.setplayer_explosion_start(Utilidades.getCurrentTime());
-                    player.setplayer_explosion_end(Utilidades.getCurrentTime() + 2000L);
+                    player.setplayer_explosion_start(getCurrentTime());
+                    player.setplayer_explosion_end(getCurrentTime() + 2000L);
                 }
             }
 
@@ -108,8 +110,21 @@ final class statesUpdatesPlayer{
                 if(dist < (player.getplayer_radius() + enemy2.getRadius()) * 0.8){
 
                     player.setplayer_state(EXPLODING);
-                    player.setplayer_explosion_start(Utilidades.getCurrentTime());
-                    player.setplayer_explosion_end(Utilidades.getCurrentTime() + 2000L);
+                    player.setplayer_explosion_start(getCurrentTime());
+                    player.setplayer_explosion_end(getCurrentTime() + 2000L);
+                }
+            }
+            for(int i = 0; i < enemy3.getArray().size(); i++){
+
+                double dx = enemy3.getX(i) - player.getplayer_X();
+                double dy = enemy3.getY(i) - player.getplayer_Y();
+                double dist = Math.sqrt(dx * dx + dy * dy);
+
+                if(dist < (player.getplayer_radius() + enemy3.getRadius()) * 0.8){
+
+                    player.setplayer_state(EXPLODING);
+                    player.setplayer_explosion_start(getCurrentTime());
+                    player.setplayer_explosion_end(getCurrentTime() + 2000L);
                 }
             }
         }
@@ -118,7 +133,7 @@ final class statesUpdatesPlayer{
     private static void verificaPlayer(player player){
         if(player.getplayer_state() == EXPLODING){
 
-            if(Utilidades.getCurrentTime() > player.getplayer_explosion_end()){
+            if(getCurrentTime() > player.getplayer_explosion_end()){
 
                 player.setplayer_state(ACTIVE);
             }
@@ -148,60 +163,68 @@ final class statesUpdatesEnemy1{
                     if (dist < enemy1.getRadius()) {
 
                         enemy1.setStateValue(i, EXPLODING);
-                        enemy1.addExplosion_start(Utilidades.getCurrentTime());
-                        enemy1.addExplosion_end(Utilidades.getCurrentTime() + 500);
+                        enemy1.addExplosion_start(getCurrentTime());
+                        enemy1.addExplosion_end(getCurrentTime() + 500);
                     }
                 }
             }
         }
     }
 
-    static void verificaEnemy1(enemy1 enemy1, enemyShot enemyShot, player player){
+    private static void verificaEnemy1(enemy1 enemy1, enemyShot enemyShot, player player){
         for(int i = 0; i < enemy1.getArray().size(); i++){
 
             if(enemy1.getStateValue(i) == EXPLODING){
 
-                if(Utilidades.getCurrentTime() > enemy1.getExplosion_end()){
+                if(getCurrentTime() > enemy1.getExplosion_end()){
 
                         enemy1.setStateValue(i, INACTIVE);
-                    }
-                }
 
-                if(enemy1.getStateValue(i) == ACTIVE){
+                }
+            }
+
+
+            if(enemy1.getStateValue(i) == ACTIVE){
 
                     /* verificando se inimigo saiu da tela */
-                    if(enemy1.getY(i) > GameLib.HEIGHT + 10) {
+                if(enemy1.getY(i) > GameLib.HEIGHT + 10) {
 
                         enemy1.setStateValue(i, INACTIVE);
-                    }
-                    else {
 
-                        enemy1.setX(i, enemy1.getX(i) + (enemy1.getVX(i) * Math.cos(enemy1.getAngle(i)) * Utilidades.getDelta()));
-                        enemy1.setY(i, enemy1.getY(i) + (enemy1.getVY(i) * Math.sin(enemy1.getAngle(i)) * Utilidades.getDelta() * (-1.0)));
-                        enemy1.setAngle(i, enemy1.getAngle(i) + (enemy1.getRV(i) * Utilidades.getDelta()));
+                }
+                 else {
 
-                        if(Utilidades.getCurrentTime() > enemy1.getNextShot(i) && enemy1.getY(i) < player.getplayer_Y()){
+                        enemy1.setX(i, enemy1.getX(i) + (enemy1.getVX(i) * Math.cos(enemy1.getAngle(i)) * getDelta()));
+                        enemy1.setY(i, enemy1.getY(i) + (enemy1.getVY(i) * Math.sin(enemy1.getAngle(i)) * getDelta() * (-1.0)));
+                        enemy1.setAngle(i, enemy1.getAngle(i) + (enemy1.getRV(i) * getDelta()));
+
+                        if(getCurrentTime() > enemy1.getNextShot(i) && enemy1.getY(i) < player.getplayer_Y()){
 
                             enemyShot.addNewElement(ACTIVE, enemy1.getX(i), enemy1.getY(i), Math.cos(enemy1.getAngle(i)) * 0.45, Math.sin(enemy1.getAngle(i)) * 0.45 * (-1.0));
-                            enemy1.setNext_Shoot(i, (long) (Utilidades.getCurrentTime() + 200 + Math.random() * 500));
+                            enemy1.setNext_Shoot(i, (long) (getCurrentTime() + 200 + Math.random() * 500));
 
                         }
                     }
                 }
-            }
-            if(Utilidades.getCurrentTime() > enemy1.getEnemiesSpawnTime()){
+            if(enemy1.getStateValue(i) == INACTIVE){
+                enemy1.removeElement(i);
 
-                //velocidade original funcionando
-                //cpa q o bug de spawn do enemy2 ta consertado, mas o player as vezes explode no centro da tela
-                //problema qnd mata mais de um inimigo do tipo 2
-                enemy1.addNewElement(ACTIVE, Math.random() * (GameLib.WIDTH - 20.0) + 10.0, -10, 0, 0.2 + Math.random() * 0.15);
+            }
+        }
+
+        if(getCurrentTime() > enemy1.getEnemiesSpawnTime()){
+
+            //velocidade original funcionando
+            //cpa q o bug de spawn do enemy2 ta consertado, mas o player as vezes explode no centro da tela
+            //problema qnd mata mais de um inimigo do tipo 2
+            enemy1.addNewElement(ACTIVE, Math.random() * (GameLib.WIDTH - 20.0) + 10.0, -10, 0, 0.2 + Math.random() * 0.15);
                     int free = enemy1.getArray().size() - 1;
 
                     enemy1.addAngle(3 * Math.PI / 2);
                     enemy1.addRV(0.0);
                     enemy1.setStateValue(free, ACTIVE);
-                    enemy1.addNext_Shoot(Utilidades.getCurrentTime() + 500);
-                    enemy1.setEnemiesSpawnTime(Utilidades.getCurrentTime() + 500);
+                    enemy1.addNext_Shoot(getCurrentTime() + 500);
+                    enemy1.setEnemiesSpawnTime(getCurrentTime() + 500);
 
             }
         }
@@ -212,9 +235,9 @@ final class statesUpdatesEnemy1{
         }
 }
 
-final class stateUpdatesEnemy2{
+final class statesUpdatesEnemy2{
 
-    static void InimigoProjetil (enemy2 enemy2, shot playerShot) {
+    private static void InimigoProjetil (enemy2 enemy2, shot playerShot) {
 
         for (int k = 0; k < playerShot.getArray().size(); k++) {
             for (int i = 0; i < enemy2.getArray().size(); i++) {
@@ -228,22 +251,23 @@ final class stateUpdatesEnemy2{
                     if (dist < enemy2.getRadius()) {
 
                         enemy2.setStateValue(i, EXPLODING);
-                        enemy2.addExplosion_start(Utilidades.getCurrentTime());
-                        enemy2.addExplosion_end(Utilidades.getCurrentTime() + 500L);
+                        enemy2.addExplosion_start(getCurrentTime());
+                        enemy2.addExplosion_end(getCurrentTime() + 500L);
                     }
                 }
             }
         }
     }
 
-    static void verificaEnemy2(enemy2 enemy2, enemyShot enemyShot){
+    private static void verificaEnemy2(enemy2 enemy2, enemyShot enemyShot){
         for(int i = 0; i < enemy2.getArray().size(); i++){
 
             if(enemy2.getStateValue(i) == EXPLODING){
 
-                if(Utilidades.getCurrentTime() > enemy2.getExplosion_end()){
+                if(getCurrentTime() > enemy2.getExplosion_end()){
 
                     enemy2.setStateValue(i, INACTIVE);
+
                 }
             }
 
@@ -253,15 +277,16 @@ final class stateUpdatesEnemy2{
                 if(	enemy2.getX(i) < -10 || enemy2.getX(i) > GameLib.WIDTH + 10 ) {
 
                     enemy2.setStateValue(i, INACTIVE);
+
                 }
                 else {
 
                     boolean shootNow = false;
                     double previousY = enemy2.getY(i);
 
-                    enemy2.setX(i, enemy2.getX(i) + (enemy2.getVY(i) * Math.cos(enemy2.getAngle(i)) * Utilidades.getDelta()));
-                    enemy2.setY(i, enemy2.getY(i) + (enemy2.getVY(i) * Math.sin(enemy2.getAngle(i)) * Utilidades.getDelta() * (-1.0)));
-                    enemy2.setAngle(i, enemy2.getAngle(i) +(enemy2.getRV(i) * Utilidades.getDelta()));
+                    enemy2.setX(i, enemy2.getX(i) + (enemy2.getVY(i) * Math.cos(enemy2.getAngle(i)) * getDelta()));
+                    enemy2.setY(i, enemy2.getY(i) + (enemy2.getVY(i) * Math.sin(enemy2.getAngle(i)) * getDelta() * (-1.0)));
+                    enemy2.setAngle(i, enemy2.getAngle(i) +(enemy2.getRV(i) * getDelta()));
 
                     double threshold = GameLib.HEIGHT * 0.30;
 
@@ -288,31 +313,25 @@ final class stateUpdatesEnemy2{
                     if(shootNow){
 
                         double [] angles = { Math.PI/2 + Math.PI/8, Math.PI/2, Math.PI/2 - Math.PI/8 };
-                        int [] freeArray = findFreeIndexArray(enemyShot.getArray(), angles.length);
+                        Random generator = new Random();
+                        int randomIndex = generator.nextInt(angles.length);
 
-                        for(int k = 0; k < freeArray.length; k++){
+                        double a = angles[randomIndex] + Math.random() * Math.PI/6 - Math.PI/12;
+                        double vx = Math.cos(a);
+                        double vy = Math.sin(a);
 
-                            int free = freeArray[k];
+                        enemyShot.addEnemyShot(ACTIVE, enemy2.getX(i), enemy2.getY(i), vx * 0.30, vy * 0.30);
 
-                            if(free < enemyShot.getArray().size()){
-
-                                double a = angles[k] + Math.random() * Math.PI/6 - Math.PI/12;
-                                double vx = Math.cos(a);
-                                double vy = Math.sin(a);
-
-                                enemyShot.setX(free, enemy2.getX(i));
-                                enemyShot.setY(free, enemy2.getY(i));
-                                enemyShot.setVX(free, vx * 0.30);
-                                enemyShot.setVY(free, vy * 0.30);
-                                enemyShot.setStateValue(free, 1);
-                            }
-                        }
                     }
                 }
             }
+            if(enemy2.getStateValue(i) == INACTIVE){
+                enemy2.removeElement(i);
+
+            }
         }
 
-        if(Utilidades.getCurrentTime() > enemy2.getEnemiesSpawnTime()){
+        if(getCurrentTime() > enemy2.getEnemiesSpawnTime()){
 
 
             enemy2.addNewElement(ACTIVE, enemy2.getEnemy2_spawnX(), -10.0, 0, 0.42);
@@ -322,13 +341,13 @@ final class stateUpdatesEnemy2{
 
                 if(enemy2.getEnemy2_count() < 10){
 
-                    enemy2.setEnemiesSpawnTime(Utilidades.getCurrentTime() + 120L);
+                    enemy2.setEnemiesSpawnTime(getCurrentTime() + 120L);
                 }
                 else {
 
                     enemy2.setEnemy2_count(0);
                     enemy2.setEnemy2_spawnX(Math.random() > 0.5 ? 96.0 : 384.0);
-                    enemy2.setEnemiesSpawnTime((long)((double)(Utilidades.getCurrentTime() + 3000L) + Math.random() * 3000));
+                    enemy2.setEnemiesSpawnTime((long)((double)(getCurrentTime() + 3000L) + Math.random() * 3000));
                 }
 
         }
@@ -457,7 +476,7 @@ final class statesUpdatesEnemy3 {
 
 
 
-final class stateUpdatesPlayerShots{
+final class statesUpdatesPlayerShots{
 
     static void verificaPlayerShot(shot playerShot){
         for(int i = 0; i < playerShot.getArray().size(); i++){
@@ -471,15 +490,15 @@ final class stateUpdatesPlayerShots{
                 }
                 else {
 
-                    playerShot.setX(i, playerShot.getX(i) + (playerShot.getVX(i) * Utilidades.getDelta()));
-                    playerShot.setY(i, playerShot.getY(i) + (playerShot.getVY(i) * Utilidades.getDelta()));
+                    playerShot.setX(i, playerShot.getX(i) + (playerShot.getVX(i) * getDelta()));
+                    playerShot.setY(i, playerShot.getY(i) + (playerShot.getVY(i) * getDelta()));
                 }
             }
         }
     }
 }
 
-final class stateUpdatesEnemyShots{
+final class statesUpdatesEnemyShots{
     static void verificaEnemyShot(enemyShot enemyShot){
         for(int i = 0; i < enemyShot.getArray().size(); i++){
 
@@ -492,8 +511,8 @@ final class stateUpdatesEnemyShots{
                 }
                 else {
 
-                    enemyShot.setX(i, enemyShot.getX(i) +(enemyShot.getVX(i) * Utilidades.getDelta()));
-                    enemyShot.setY(i, enemyShot.getY(i) +(enemyShot.getVY(i) * Utilidades.getDelta()));
+                    enemyShot.setX(i, enemyShot.getX(i) +(enemyShot.getVX(i) * getDelta()));
+                    enemyShot.setY(i, enemyShot.getY(i) +(enemyShot.getVY(i) * getDelta()));
                 }
             }
         }

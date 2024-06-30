@@ -107,7 +107,7 @@ class Render{
 
             if(enemy3.getStateValue(i) == ACTIVE){
 
-                GameLib.setColor(Color.WHITE);
+                GameLib.setColor(Color.GREEN);
                 GameLib.drawDiamond(enemy3.getX(i), enemy3.getY(i), enemy3.getRadius());
             }
         }
