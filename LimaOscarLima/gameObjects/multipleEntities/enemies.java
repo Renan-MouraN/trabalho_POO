@@ -63,6 +63,7 @@ public class enemies implements LimaOscarLima.Interfaces.multipleGameObjects{
     public void addNewElement(int state, double x, double y, double VX, double VY){ enemies.add(new gameObject(state, x, y, enemies_radius, VX, VY)); }
     public void removeElement(int i){
         enemies.remove(i);
+        enemies.trimToSize();
     }
     public void setStateValue(int i, int d){
         enemies.get(i).setState(d);

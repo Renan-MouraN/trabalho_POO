@@ -35,6 +35,21 @@ public class Utilidades {
         while(System.currentTimeMillis() < time) Thread.yield();
     }
 
+    /* Encontra e devolve o primeiro índice do  */
+    /* array referente a uma posição "inativa". */
+
+    public static int findFreeIndexArray(ArrayList <gameObject> stateArray){
+
+        int i;
+
+        for(i = 0; i < stateArray.size() + 1; i++){
+
+            if(stateArray.get(i).getState() == INACTIVE) break;
+        }
+
+        return i;
+    }
+
     /* Encontra e devolve o conjunto de índices (a quantidade */
     /* de índices é defnida através do parâmetro "amount") do */
     /* array, referentes a posições "inativas".               */
