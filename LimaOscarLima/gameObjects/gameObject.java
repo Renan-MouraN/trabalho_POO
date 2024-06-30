@@ -45,8 +45,9 @@ public class gameObject {
     public void setX(double x) {
         this.x = x;
     }
+
     public void setY(double y) {
-        this.y = y;
+
     }
     public void setRadius(double radius) {
         this.radius = radius;
@@ -56,5 +57,8 @@ public class gameObject {
     }
     public void setVY(double VY) {
         this.VY = VY;
+    }
+
+    protected void addNewElement(int state, double x, double y, double vx, double vy) {
     }
 }
