@@ -7,10 +7,6 @@ import LimaOscarLima.Util.*;
 import LimaOscarLima.gameObjects.multipleEntities.*;
 import LimaOscarLima.gameObjects.singleEntities.player;
 
-import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 public class Main{
 
     /* Constantes relacionadas aos estados que os elementos   */
@@ -19,7 +15,6 @@ public class Main{
     public static final int INACTIVE = 0;
     public static final int ACTIVE = 1;
     public static final int EXPLODING = 2;
-    public static final int INVINCIBLE = 3;
 
     /* Método principal */
 
@@ -50,8 +45,6 @@ public class Main{
 
         enemy2 enemy2 = new enemy2( 12.0, Utilidades.getCurrentTime() + 7000,GameLib.WIDTH * 0.20, 0);
 
-        enemy3 enemy3 = new enemy3(9.0, Utilidades.getCurrentTime() + 2000);
-
         /* variáveis dos projéteis lançados pelos inimigos (tanto tipo 1, quanto tipo 2) */
 
         enemyShot enemyShot = new enemyShot( 2.0);
@@ -65,10 +58,6 @@ public class Main{
 
         Background background2 = new Background(50,0.045,0.0);
         background2.inicializaBackground(background2);
-
-        /* powerup que dá invulnerabilidade ao player*/
-        PowerUp powerup = new PowerUp(10.0);
-
 
         /* iniciado interface gráfica */
 
@@ -97,11 +86,11 @@ public class Main{
 
             /* Verificação de colisões, estados e inputs*/
 
-            Rammus.mainLoop(player, playerShot, enemy1, enemy2, enemy3, enemyShot, powerup);
+            Rammus.mainLoop(player, playerShot, enemy1, enemy2, enemyShot);
 
             /* Desenho da cena */
 
-            Graficos.desenharCena(player, playerShot, enemyShot, enemy1, enemy2, enemy3, background1, background2, powerup);
+            Graficos.desenharCena(player, playerShot, enemyShot, enemy1, enemy2, background1, background2);
 
             /* chamama a display() da classe GameLib atualiza o desenho exibido pela interface do jogo. */
 
@@ -110,6 +99,8 @@ public class Main{
             /* faz uma pausa de modo que cada execução do laço do main loop demore aproximadamente 5 ms. */
 
             Utilidades.busyWait(Utilidades.getCurrentTime() + 5);
+
+            //apaguei os /******/ msm acho ruim chama o batman
         }
 
         System.exit(0);

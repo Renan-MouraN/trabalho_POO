@@ -13,19 +13,17 @@ import static LimaOscarLima.Main.EXPLODING;
 
 public class Graficos {
 
-    public static void desenharCena(player player, shot playerShot, enemyShot enemyShot, enemies enemy1, enemy2 enemy2, enemy3 enemy3, Background background1, Background background2, PowerUp powerup) {
+    public static void desenharCena(player player, shot playerShot, enemyShot enemyShot, enemies enemy1, enemy2 enemy2, Background background1, Background background2) {
         Render.desenharPlayer(player);
         Render.desenharProjeteis(playerShot);
         Render.desenharProjeteisInimigos(enemyShot);
         Render.desenharInimigo1(enemy1);
         Render.desenharInimigo2(enemy2);
-        Render.desenharInimigo3(enemy3);
         Background.DesenhaBackGround(background1,background2);
-        Render.desenharPowerUp(powerup);
     }
 }
 
-class Render {
+class Render{
     // Desenha player
     static void desenharPlayer(player player) {
         if (player.getplayer_state() == EXPLODING) {
@@ -50,7 +48,6 @@ class Render {
             }
         }
     }
-
     // Desenha os projéteis dos inimigos
     static void desenharProjeteisInimigos(enemyShot enemyShot) {
         for (int i = 0; i < enemyShot.getArray().size(); i++) {
@@ -80,62 +77,19 @@ class Render {
 
     // Desenhando os inimigos do tipo 2
     static void desenharInimigo2(enemy2 enemy2) {
-        for (int i = 0; i < enemy2.getArray().size(); i++) {
+        for(int i = 0; i < enemy2.getArray().size(); i++){
 
-            if (enemy2.getStateValue(i) == EXPLODING) {
+            if(enemy2.getStateValue(i) == EXPLODING){
 
                 double alpha = (Utilidades.getCurrentTime() - enemy2.getExplosion_start()) / (enemy2.getExplosion_end() - enemy2.getExplosion_start());
                 GameLib.drawExplosion(enemy2.getX(i), enemy2.getY(i), alpha);
             }
 
-            if (enemy2.getStateValue(i) == ACTIVE) {
+            if(enemy2.getStateValue(i) == ACTIVE){
 
                 GameLib.setColor(Color.MAGENTA);
                 GameLib.drawDiamond(enemy2.getX(i), enemy2.getY(i), enemy2.getRadius());
             }
         }
     }
-
-    // Desenhando os inimigos do tipo 3
-    static void desenharInimigo3(enemy3 enemy3) {
-        for (int i = 0; i < enemy3.getArray().size(); i++) {
-
-            if (enemy3.getStateValue(i) == EXPLODING) {
-
-                double alpha = (Utilidades.getCurrentTime() - enemy3.getExplosion_start()) / (enemy3.getExplosion_end() - enemy3.getExplosion_start());
-                GameLib.drawExplosion(enemy3.getX(i), enemy3.getY(i), alpha);
-            }
-
-            if (enemy3.getStateValue(i) == ACTIVE) {
-
-                GameLib.setColor(Color.ORANGE);
-                GameLib.drawDiamond(enemy3.getX(i), enemy3.getY(i), enemy3.getRadius());
-            }
-        }
-    }
-
-
-
-    static void desenharPowerUp(PowerUp powerUp) {
-        long currentTime = Utilidades.getCurrentTime();
-
-        for (int i = 0; i < powerUp.getArray().size(); i++) {
-            if ((currentTime - powerUp.getSpawnTime()) % 25000 < 10000) { // Aparece por 10 segundos a cada 25 segundos
-                GameLib.setColor(Color.ORANGE);
-                GameLib.drawCircle(powerUp.getX(i), powerUp.getY(i), powerUp.getRadius());
-            }
-
-        }
-
-
-
-    }
-
 }
-
-
-
-
-
-
-
